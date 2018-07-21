@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func LogInfo(v ...interface{}) {
+func Info(v ...interface{}) {
 	if showTime {
 		printTime()
 	}
@@ -12,7 +12,7 @@ func LogInfo(v ...interface{}) {
 	fmt.Print(v...)
 }
 
-func LogInfof(format string, v ...interface{}) {
+func Infof(format string, v ...interface{}) {
 	if showTime {
 		printTime()
 	}
@@ -20,7 +20,7 @@ func LogInfof(format string, v ...interface{}) {
 	fmt.Printf(format, v...)
 }
 
-func LogInfoln(v ...interface{}) {
+func Infoln(v ...interface{}) {
 	if showTime {
 		printTime()
 	}
