@@ -12,7 +12,7 @@ func Error(v ...interface{}) {
 	fmt.Print(v...)
 }
 
-func Errof(format string, v ...interface{}) {
+func Errorf(format string, v ...interface{}) {
 	if showTime {
 		printTime()
 	}
