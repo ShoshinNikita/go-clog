@@ -21,6 +21,8 @@ var (
 	// For time
 	yellowf = color.New(color.FgYellow).PrintfFunc()
 
+	// For fatal
+	bgRed = color.New(color.BgRed).PrintFunc()
 )
 
 // ShowTime sets showTime
@@ -57,4 +59,13 @@ func printInfoMsg() {
 	} else {
 		fmt.Print("[INFO] ")
 	}
+}
+
+func printFatalMsg() {
+	if printColor {
+		bgRed("[FATAL]")
+	} else {
+		fmt.Print("[FATAL]")
+	}
+	fmt.Print(" ")
 }
