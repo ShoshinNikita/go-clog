@@ -1,6 +1,7 @@
 package log
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/fatih/color"
@@ -8,6 +9,7 @@ import (
 
 var (
 	showTime   bool
+	printColor = true
 	timeLayout = "01.02.2006 15:04:05"
 
 	// For [ERR]
@@ -26,26 +28,38 @@ var (
 	yellowln = color.New(color.FgYellow).PrintlnFunc()
 )
 
-// ShowTime enables showing of time
+// ShowTime sets showTime
 // Time isn't printed by default
-func ShowTime() {
-	showTime = true
+func ShowTime(b bool) {
+	showTime = b
 }
 
-// HideTime disable showing of time
-// Time isn't printed by default
-func HideTime() {
-	showTime = false
+// PrintColor sets printColor
+// printColor is true by default
+func PrintColor(b bool) {
+	printColor = b
 }
 
 func printTime() {
-	yellowf("%s ", time.Now().Format(timeLayout))
+	if printColor {
+		yellowf("%s ", time.Now().Format(timeLayout))
+	} else {
+		fmt.Printf("%s ", time.Now().Format(timeLayout))
+	}
 }
 
 func printErrMsg() {
-	red("[ERR] ")
+	if printColor {
+		red("[ERR] ")
+	} else {
+		fmt.Print("[ERR] ")
+	}
 }
 
 func printInfoMsg() {
-	cyan("[INFO] ")
+	if printColor {
+		cyan("[INFO] ")
+	} else {
+		fmt.Print("[INFO] ")
+	}
 }
