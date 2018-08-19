@@ -13,19 +13,14 @@ var (
 	timeLayout = "01.02.2006 15:04:05"
 
 	// For [ERR]
-	red   = color.New(color.FgRed).PrintFunc()
-	redf  = color.New(color.FgRed).PrintfFunc()
-	redln = color.New(color.FgRed).PrintlnFunc()
+	red = color.New(color.FgRed).PrintFunc()
 
 	// For [INFO]
-	cyan   = color.New(color.FgCyan).PrintFunc()
-	cyanf  = color.New(color.FgCyan).PrintfFunc()
-	cyanln = color.New(color.FgCyan).PrintlnFunc()
+	cyan = color.New(color.FgCyan).PrintFunc()
 
 	// For time
-	yellow   = color.New(color.FgYellow).PrintFunc()
-	yellowf  = color.New(color.FgYellow).PrintfFunc()
-	yellowln = color.New(color.FgYellow).PrintlnFunc()
+	yellowf = color.New(color.FgYellow).PrintfFunc()
+
 )
 
 // ShowTime sets showTime
