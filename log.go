@@ -12,18 +12,28 @@ var (
 	printColor = true
 	timeLayout = "01.02.2006 15:04:05"
 
+	printChan = make(chan string, 500)
+
 	// For [ERR]
-	red = color.New(color.FgRed).PrintFunc()
+	red = color.New(color.FgRed).Sprint
 
 	// For [INFO]
-	cyan = color.New(color.FgCyan).PrintFunc()
+	cyan = color.New(color.FgCyan).Sprint
 
 	// For time
-	yellowf = color.New(color.FgYellow).PrintfFunc()
+	yellowf = color.New(color.FgYellow).Sprintf
 
 	// For fatal
-	bgRed = color.New(color.BgRed).PrintFunc()
+	bgRed = color.New(color.BgRed).Sprint
 )
+
+func init() {
+	go func() {
+		for text := range printChan {
+			fmt.Print(text)
+		}
+	}()
+}
 
 // ShowTime sets showTime
 // Time isn't printed by default
@@ -37,35 +47,30 @@ func PrintColor(b bool) {
 	printColor = b
 }
 
-func printTime() {
+func getTime() string {
 	if printColor {
-		yellowf("%s ", time.Now().Format(timeLayout))
-	} else {
-		fmt.Printf("%s ", time.Now().Format(timeLayout))
+		return yellowf("%s ", time.Now().Format(timeLayout))
 	}
+	return fmt.Sprintf("%s ", time.Now().Format(timeLayout))
 }
 
-func printErrMsg() {
+func getErrMsg() string {
 	if printColor {
-		red("[ERR] ")
-	} else {
-		fmt.Print("[ERR] ")
+		return red("[ERR] ")
 	}
+	return "[ERR] "
 }
 
-func printInfoMsg() {
+func getInfoMsg() string {
 	if printColor {
-		cyan("[INFO] ")
-	} else {
-		fmt.Print("[INFO] ")
+		return cyan("[INFO] ")
 	}
+	return "[INFO] "
 }
 
-func printFatalMsg() {
+func getFatalMsg() (s string) {
 	if printColor {
-		bgRed("[FATAL]")
-	} else {
-		fmt.Print("[FATAL]")
+		return bgRed("[FATAL]") + " "
 	}
-	fmt.Print(" ")
+	return "[FATAL] "
 }

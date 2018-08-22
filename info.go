@@ -5,25 +5,28 @@ import (
 )
 
 func Info(v ...interface{}) {
+	text := ""
 	if showTime {
-		printTime()
+		text = getTime()
 	}
-	printInfoMsg()
-	fmt.Print(v...)
+	text += getInfoMsg()
+	printChan <- text + fmt.Sprint(v...)
 }
 
 func Infof(format string, v ...interface{}) {
+	text := ""
 	if showTime {
-		printTime()
+		text = getTime()
 	}
-	printInfoMsg()
-	fmt.Printf(format, v...)
+	text += getInfoMsg()
+	printChan <- text + fmt.Sprintf(format, v...)
 }
 
 func Infoln(v ...interface{}) {
+	text := ""
 	if showTime {
-		printTime()
+		text = getTime()
 	}
-	printInfoMsg()
-	fmt.Println(v...)
+	text += getInfoMsg()
+	printChan <- text + fmt.Sprintln(v...)
 }

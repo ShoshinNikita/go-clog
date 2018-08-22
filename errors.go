@@ -5,25 +5,28 @@ import (
 )
 
 func Error(v ...interface{}) {
+	text := ""
 	if showTime {
-		printTime()
+		text = getTime()
 	}
-	printErrMsg()
-	fmt.Print(v...)
+	text += getErrMsg()
+	printChan <- text + fmt.Sprint(v...)
 }
 
 func Errorf(format string, v ...interface{}) {
+	text := ""
 	if showTime {
-		printTime()
+		text = getTime()
 	}
-	printErrMsg()
-	fmt.Printf(format, v...)
+	text += getErrMsg()
+	printChan <- text + fmt.Sprintf(format, v...)
 }
 
 func Errorln(v ...interface{}) {
+	text := ""
 	if showTime {
-		printTime()
+		text = getTime()
 	}
-	printErrMsg()
-	fmt.Println(v...)
+	text += getErrMsg()
+	printChan <- text + fmt.Sprintln(v...)
 }

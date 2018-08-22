@@ -5,13 +5,13 @@ import (
 )
 
 func Print(v ...interface{}) {
-	fmt.Print(v...)
+	printChan <- fmt.Sprint(v...)
 }
 
 func Printf(format string, v ...interface{}) {
-	fmt.Printf(format, v...)
+	printChan <- fmt.Sprintf(format, v...)
 }
 
 func Println(v ...interface{}) {
-	fmt.Println(v...)
+	printChan <- fmt.Sprintln(v...)
 }
