@@ -30,7 +30,7 @@ var (
 func init() {
 	go func() {
 		for text := range printChan {
-			fmt.Print(text)
+			fmt.Fprint(color.Output, text)
 		}
 	}()
 }
