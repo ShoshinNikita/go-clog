@@ -10,7 +10,7 @@ func Info(v ...interface{}) {
 		text = getTime()
 	}
 	text += getInfoMsg()
-	printChan <- text + fmt.Sprint(v...)
+	printText(text + fmt.Sprint(v...))
 }
 
 func Infof(format string, v ...interface{}) {
@@ -19,7 +19,7 @@ func Infof(format string, v ...interface{}) {
 		text = getTime()
 	}
 	text += getInfoMsg()
-	printChan <- text + fmt.Sprintf(format, v...)
+	printText(text + fmt.Sprintf(format, v...))
 }
 
 func Infoln(v ...interface{}) {
@@ -28,5 +28,5 @@ func Infoln(v ...interface{}) {
 		text = getTime()
 	}
 	text += getInfoMsg()
-	printChan <- text + fmt.Sprintln(v...)
+	printText(text + fmt.Sprintln(v...))
 }

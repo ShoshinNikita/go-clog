@@ -10,7 +10,7 @@ func Error(v ...interface{}) {
 		text = getTime()
 	}
 	text += getErrMsg()
-	printChan <- text + fmt.Sprint(v...)
+	printText(text + fmt.Sprint(v...))
 }
 
 func Errorf(format string, v ...interface{}) {
@@ -19,7 +19,7 @@ func Errorf(format string, v ...interface{}) {
 		text = getTime()
 	}
 	text += getErrMsg()
-	printChan <- text + fmt.Sprintf(format, v...)
+	printText(text + fmt.Sprintf(format, v...))
 }
 
 func Errorln(v ...interface{}) {
@@ -28,5 +28,5 @@ func Errorln(v ...interface{}) {
 		text = getTime()
 	}
 	text += getErrMsg()
-	printChan <- text + fmt.Sprintln(v...)
+	printText(text + fmt.Sprintln(v...))
 }

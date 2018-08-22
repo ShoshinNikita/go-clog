@@ -7,32 +7,55 @@ import (
 	"github.com/fatih/color"
 )
 
+type textStruct struct {
+	text string
+	ch   chan struct{}
+}
+
+func (t *textStruct) done() {
+	close(t.ch)
+}
+
+func newText(text string) textStruct {
+	return textStruct{text: text, ch: make(chan struct{})}
+}
+
+const (
+	timeLayout = "01.02.2006 15:04:05"
+)
+
 var (
 	showTime   bool
 	printColor = true
-	timeLayout = "01.02.2006 15:04:05"
-
-	printChan = make(chan string, 500)
+	printChan  = make(chan textStruct, 500)
 
 	// For [ERR]
-	red = color.New(color.FgRed).Sprint
+	red = color.New(color.FgRed).SprintFunc()
 
 	// For [INFO]
-	cyan = color.New(color.FgCyan).Sprint
+	cyan = color.New(color.FgCyan).SprintFunc()
 
 	// For time
-	yellowf = color.New(color.FgYellow).Sprintf
+	yellowf = color.New(color.FgYellow).SprintfFunc()
 
 	// For fatal
-	bgRed = color.New(color.BgRed).Sprint
+	bgRed = color.New(color.BgRed).SprintFunc()
 )
 
+// init runs goroutine, which prints text from channel
 func init() {
 	go func() {
 		for text := range printChan {
-			fmt.Fprint(color.Output, text)
+			fmt.Fprint(color.Output, text.text)
+			text.done()
 		}
 	}()
+}
+
+func printText(text string) {
+	t := newText(text)
+	printChan <- t
+	<-t.ch
 }
 
 // ShowTime sets showTime
