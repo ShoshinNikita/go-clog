@@ -1,3 +1,17 @@
+// Package log provides functions for pretty print
+//
+// Patterns of functions print:
+// * Print(), Printf(), Println():
+//   (?time) msg
+// * Info(), Infof(), Infoln():
+//   (?time) [INFO] msg
+// * Error(), Errorf(), Errorln():
+//   (?time) [ERR] (?file:line) error
+// * Fatal(), Fatalf(), Fatalln():
+//   (?time) [FATAL] (?file:line) error
+//
+// Time pattern: MM.dd.yyyy hh:mm:ss (01.30.2018 05:5:59)
+//
 package log
 
 import (
