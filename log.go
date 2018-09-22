@@ -2,6 +2,7 @@ package log
 
 import (
 	"fmt"
+	"runtime"
 	"time"
 
 	"github.com/fatih/color"
@@ -25,9 +26,11 @@ const (
 )
 
 var (
-	showTime   bool
-	printColor = true
-	printChan  = make(chan textStruct, 500)
+	showTime       bool
+	printColor     = true
+	printErrorLine = true
+
+	printChan = make(chan textStruct, 500)
 
 	// For [ERR]
 	red = color.New(color.FgRed).SprintFunc()
@@ -70,11 +73,35 @@ func PrintColor(b bool) {
 	printColor = b
 }
 
+// PrintErrorLine sets PrintErrorLine
+// If PrintErrorLine is true, log.Error(), log.Errorf(), log.Errorln() will print file and line,
+// where functions were called.
+// PrintErrorLine is true by default
+func PrintErrorLine(b bool) {
+	printErrorLine = b
+}
+
 func getTime() string {
 	if printColor {
 		return yellowf("%s ", time.Now().Format(timeLayout))
 	}
 	return fmt.Sprintf("%s ", time.Now().Format(timeLayout))
+}
+
+func getCaller() string {
+	// We need to skip 2 functions (this and log.Error(), log.Errorf() or log.Errorln())
+	_, file, line, ok := runtime.Caller(2)
+	if !ok {
+		return ""
+	}
+	var shortFile string
+	for i := len(file) - 1; i >= 0; i-- {
+		if file[i] == '/' {
+			shortFile = file[i+1:]
+			break
+		}
+	}
+	return fmt.Sprintf("%s:%d ", shortFile, line)
 }
 
 func getErrMsg() string {
