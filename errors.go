@@ -8,7 +8,7 @@ import (
 // Output pattern: (?time) [ERR] (?file:line) error
 func Error(v ...interface{}) {
 	text := ""
-	if showTime {
+	if printTime {
 		text = getTime()
 	}
 	text += getErrMsg()
@@ -22,7 +22,7 @@ func Error(v ...interface{}) {
 // Output pattern: (?time) [ERR] (?file:line) error
 func Errorf(format string, v ...interface{}) {
 	text := ""
-	if showTime {
+	if printTime {
 		text = getTime()
 	}
 	text += getErrMsg()
@@ -36,7 +36,7 @@ func Errorf(format string, v ...interface{}) {
 // Output pattern: (?time) [ERR] (?file:line) error
 func Errorln(v ...interface{}) {
 	text := ""
-	if showTime {
+	if printTime {
 		text = getTime()
 	}
 	text += getErrMsg()

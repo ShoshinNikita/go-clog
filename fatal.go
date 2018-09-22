@@ -7,7 +7,7 @@ import (
 
 func Fatal(v ...interface{}) {
 	text := ""
-	if showTime {
+	if printTime {
 		text = getTime()
 	}
 	text += getFatalMsg()
@@ -21,7 +21,7 @@ func Fatal(v ...interface{}) {
 
 func Fatalf(format string, v ...interface{}) {
 	text := ""
-	if showTime {
+	if printTime {
 		text = getTime()
 	}
 	text += getFatalMsg()
@@ -34,7 +34,7 @@ func Fatalf(format string, v ...interface{}) {
 
 func Fatalln(v ...interface{}) {
 	text := ""
-	if showTime {
+	if printTime {
 		text = getTime()
 	}
 	text += getFatalMsg()

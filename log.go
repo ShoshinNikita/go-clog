@@ -40,7 +40,7 @@ const (
 )
 
 var (
-	showTime       bool
+	printTime      bool
 	printColor     = true
 	printErrorLine = true
 
@@ -75,11 +75,17 @@ func printText(text string) {
 	<-t.ch
 }
 
-// ShowTime sets showTime
+// PrintTime sets printTime
 // Time isn't printed by default
-func ShowTime(b bool) {
-	showTime = b
+func PrintTime(b bool) {
+	printTime = b
 }
+
+// ShowTime sets printTime
+// Time isn't printed by default
+//
+// It was left for backwards compatibility
+var ShowTime = PrintTime
 
 // PrintColor sets printColor
 // printColor is true by default

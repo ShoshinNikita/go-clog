@@ -6,7 +6,7 @@ import (
 
 func Info(v ...interface{}) {
 	text := ""
-	if showTime {
+	if printTime {
 		text = getTime()
 	}
 	text += getInfoMsg()
@@ -15,7 +15,7 @@ func Info(v ...interface{}) {
 
 func Infof(format string, v ...interface{}) {
 	text := ""
-	if showTime {
+	if printTime {
 		text = getTime()
 	}
 	text += getInfoMsg()
@@ -24,7 +24,7 @@ func Infof(format string, v ...interface{}) {
 
 func Infoln(v ...interface{}) {
 	text := ""
-	if showTime {
+	if printTime {
 		text = getTime()
 	}
 	text += getInfoMsg()
