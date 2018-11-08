@@ -52,6 +52,9 @@ var (
 	// For [INFO]
 	infoPrint = color.New(color.FgCyan).SprintFunc()
 
+	// For [WARN]
+	warnPrint = color.New(color.FgYellow).SprintFunc()
+
 	// For [ERR]
 	errorPrint = color.New(color.FgRed).SprintFunc()
 
@@ -129,6 +132,13 @@ func getInfoMsg() string {
 		return infoPrint("[INFO] ")
 	}
 	return "[INFO] "
+}
+
+func getWarnMsg() string {
+	if printColor {
+		return warnPrint("[WARN] ")
+	}
+	return "[WARN] "
 }
 
 func getErrMsg() string {
