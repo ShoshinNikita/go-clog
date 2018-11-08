@@ -47,7 +47,7 @@ var (
 	printChan = make(chan textStruct, 500)
 
 	// For time
-	timePrintf = color.New(color.FgYellow).SprintfFunc()
+	timePrintf = color.New(color.FgHiGreen).SprintfFunc()
 
 	// For [INFO]
 	infoPrint = color.New(color.FgCyan).SprintFunc()
