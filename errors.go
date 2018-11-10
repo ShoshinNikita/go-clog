@@ -13,7 +13,7 @@ func (l Logger) Error(v ...interface{}) {
 	}
 	text += l.getErrMsg()
 	if l.PrintErrorLine {
-		text += getCaller()
+		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprint(v...))
 }
@@ -27,7 +27,7 @@ func (l Logger) Errorf(format string, v ...interface{}) {
 	}
 	text += l.getErrMsg()
 	if l.PrintErrorLine {
-		text += getCaller()
+		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprintf(format, v...))
 }
@@ -41,7 +41,7 @@ func (l Logger) Errorln(v ...interface{}) {
 	}
 	text += l.getErrMsg()
 	if l.PrintErrorLine {
-		text += getCaller()
+		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprintln(v...))
 }

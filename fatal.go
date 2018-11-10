@@ -14,7 +14,7 @@ func (l Logger) Fatal(v ...interface{}) {
 	}
 	text += l.getFatalMsg()
 	if l.PrintErrorLine {
-		text += getCaller()
+		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprint(v...))
 	os.Exit(1)
@@ -30,7 +30,7 @@ func (l Logger) Fatalf(format string, v ...interface{}) {
 	}
 	text += l.getFatalMsg()
 	if l.PrintErrorLine {
-		text += getCaller()
+		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprintf(format, v...))
 	os.Exit(1)
@@ -45,7 +45,7 @@ func (l Logger) Fatalln(v ...interface{}) {
 	}
 	text += l.getFatalMsg()
 	if l.PrintErrorLine {
-		text += getCaller()
+		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprint(v...))
 	os.Exit(1)

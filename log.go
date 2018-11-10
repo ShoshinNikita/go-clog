@@ -33,6 +33,8 @@ func init() {
 	globalLogger.PrintTime = false
 	globalLogger.PrintColor = true
 	globalLogger.PrintErrorLine = true
+
+	globalLogger.global = true
 }
 
 type textStruct struct {
@@ -54,6 +56,7 @@ type Logger struct {
 	PrintErrorLine bool
 
 	printChan chan textStruct
+	global    bool
 }
 
 // NewLogger creates *Logger and run goroutine (Logger.printer())

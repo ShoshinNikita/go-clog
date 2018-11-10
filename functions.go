@@ -25,12 +25,22 @@ var (
 	fatalPrint = color.New(color.BgRed).SprintFunc()
 )
 
-func getCaller() string {
-	// We need to skip 2 functions (this and log.Error(), log.Errorf() and etc.)
-	_, file, line, ok := runtime.Caller(2)
+func (l Logger) getCaller() string {
+	var (
+		file string
+		line int
+		ok   bool
+	)
+
+	if l.global {
+		_, file, line, ok = runtime.Caller(3)
+	} else {
+		_, file, line, ok = runtime.Caller(2)
+	}
 	if !ok {
 		return ""
 	}
+
 	var shortFile string
 	for i := len(file) - 1; i >= 0; i-- {
 		if file[i] == '/' {
