@@ -5,6 +5,8 @@
 //   (?time) msg
 // * Info(), Infof(), Infoln():
 //   (?time) [INFO] msg
+// * Warn(), Warnf(), Warnln():
+//   (?time) [WARN] msg
 // * Error(), Errorf(), Errorln():
 //   (?time) [ERR] (?file:line) error
 // * Fatal(), Fatalf(), Fatalln():
@@ -16,36 +18,15 @@ package log
 
 import (
 	"fmt"
-	"runtime"
-	"time"
 
 	"github.com/fatih/color"
 )
-
-type textStruct struct {
-	text string
-	ch   chan struct{}
-}
-
-func (t *textStruct) done() {
-	close(t.ch)
-}
-
-func newText(text string) textStruct {
-	return textStruct{text: text, ch: make(chan struct{})}
-}
 
 const (
 	timeLayout = "01.02.2006 15:04:05"
 )
 
 var (
-	printTime      bool
-	printColor     = true
-	printErrorLine = true
-
-	printChan = make(chan textStruct, 500)
-
 	// For time
 	timePrintf = color.New(color.FgHiGreen).SprintfFunc()
 
@@ -62,26 +43,63 @@ var (
 	fatalPrint = color.New(color.BgRed).SprintFunc()
 )
 
-// init runs goroutine, which prints text from channel
+// init inits globalLogger with NewLogger()
 func init() {
-	go func() {
-		for text := range printChan {
-			fmt.Fprint(color.Output, text.text)
-			text.done()
-		}
-	}()
+	globalLogger = NewLogger()
+
+	globalLogger.PrintTime = false
+	globalLogger.PrintColor = true
+	globalLogger.PrintErrorLine = true
 }
 
-func printText(text string) {
+type textStruct struct {
+	text string
+	ch   chan struct{}
+}
+
+func newText(text string) textStruct {
+	return textStruct{text: text, ch: make(chan struct{})}
+}
+
+func (t *textStruct) done() {
+	close(t.ch)
+}
+
+type Logger struct {
+	PrintTime      bool
+	PrintColor     bool
+	PrintErrorLine bool
+
+	printChan chan textStruct
+}
+
+// NewLogger creates *Logger and run goroutine (Logger.printer())
+func NewLogger() *Logger {
+	l := new(Logger)
+	l.printChan = make(chan textStruct)
+	go l.printer()
+	return l
+}
+
+func (l *Logger) printer() {
+	for text := range l.printChan {
+		fmt.Fprint(color.Output, text.text)
+		text.done()
+	}
+}
+
+func (l *Logger) printText(text string) {
 	t := newText(text)
-	printChan <- t
+	l.printChan <- t
 	<-t.ch
 }
 
-// PrintTime sets printTime
+var globalLogger *Logger
+
+// PrintTime sets globalLogger.PrintTime
 // Time isn't printed by default
 func PrintTime(b bool) {
-	printTime = b
+	globalLogger.PrintTime = b
 }
 
 // ShowTime sets printTime
@@ -93,7 +111,7 @@ var ShowTime = PrintTime
 // PrintColor sets printColor
 // printColor is true by default
 func PrintColor(b bool) {
-	printColor = b
+	globalLogger.PrintColor = b
 }
 
 // PrintErrorLine sets PrintErrorLine
@@ -101,56 +119,81 @@ func PrintColor(b bool) {
 // where functions were called.
 // PrintErrorLine is true by default
 func PrintErrorLine(b bool) {
-	printErrorLine = b
+	globalLogger.PrintErrorLine = b
 }
 
-func getCaller() string {
-	// We need to skip 2 functions (this and log.Error(), log.Errorf() or log.Errorln())
-	_, file, line, ok := runtime.Caller(2)
-	if !ok {
-		return ""
-	}
-	var shortFile string
-	for i := len(file) - 1; i >= 0; i-- {
-		if file[i] == '/' {
-			shortFile = file[i+1:]
-			break
-		}
-	}
-	return fmt.Sprintf("%s:%d ", shortFile, line)
+/* Print */
+
+func Print(v ...interface{}) {
+	globalLogger.Print(v...)
 }
 
-func getTime() string {
-	if printColor {
-		return timePrintf("%s ", time.Now().Format(timeLayout))
-	}
-	return fmt.Sprintf("%s ", time.Now().Format(timeLayout))
+func Printf(format string, v ...interface{}) {
+	globalLogger.Printf(format, v...)
 }
 
-func getInfoMsg() string {
-	if printColor {
-		return infoPrint("[INFO] ")
-	}
-	return "[INFO] "
+func Println(v ...interface{}) {
+	globalLogger.Println(v...)
 }
 
-func getWarnMsg() string {
-	if printColor {
-		return warnPrint("[WARN] ")
-	}
-	return "[WARN] "
+/* Info */
+
+func Info(v ...interface{}) {
+	globalLogger.Info(v...)
 }
 
-func getErrMsg() string {
-	if printColor {
-		return errorPrint("[ERR] ")
-	}
-	return "[ERR] "
+func Infof(format string, v ...interface{}) {
+	globalLogger.Infof(format, v...)
 }
 
-func getFatalMsg() (s string) {
-	if printColor {
-		return fatalPrint("[FATAL]") + " "
-	}
-	return "[FATAL] "
+func Infoln(v ...interface{}) {
+	globalLogger.Infoln(v...)
+}
+
+/* Warn */
+
+func Warn(v ...interface{}) {
+	globalLogger.Warn(v...)
+}
+
+func Warnf(format string, v ...interface{}) {
+	globalLogger.Warnf(format, v...)
+}
+
+func Warnln(v ...interface{}) {
+	globalLogger.Warnln(v...)
+}
+
+/* Error */
+
+// Error prints error
+// Output pattern: (?time) [ERR] (?file:line) error
+func Error(v ...interface{}) {
+	globalLogger.Error(v...)
+}
+
+// Errorf prints error
+// Output pattern: (?time) [ERR] (?file:line) error
+func Errorf(format string, v ...interface{}) {
+	globalLogger.Errorf(format, v...)
+}
+
+// Errorln prints error
+// Output pattern: (?time) [ERR] (?file:line) error
+func Errorln(v ...interface{}) {
+	globalLogger.Errorln(v...)
+}
+
+/* Fatal */
+
+func Fatal(v ...interface{}) {
+	globalLogger.Fatal(v...)
+}
+
+func Fatalf(format string, v ...interface{}) {
+	globalLogger.Fatalf(format, v...)
+}
+
+func Fatalln(v ...interface{}) {
+	globalLogger.Fatalln(v...)
 }

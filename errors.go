@@ -6,42 +6,42 @@ import (
 
 // Error prints error
 // Output pattern: (?time) [ERR] (?file:line) error
-func Error(v ...interface{}) {
+func (l Logger) Error(v ...interface{}) {
 	text := ""
-	if printTime {
-		text = getTime()
+	if l.PrintTime {
+		text = l.getTime()
 	}
-	text += getErrMsg()
-	if printErrorLine {
+	text += l.getErrMsg()
+	if l.PrintErrorLine {
 		text += getCaller()
 	}
-	printText(text + fmt.Sprint(v...))
+	l.printText(text + fmt.Sprint(v...))
 }
 
 // Errorf prints error
 // Output pattern: (?time) [ERR] (?file:line) error
-func Errorf(format string, v ...interface{}) {
+func (l Logger) Errorf(format string, v ...interface{}) {
 	text := ""
-	if printTime {
-		text = getTime()
+	if l.PrintTime {
+		text = l.getTime()
 	}
-	text += getErrMsg()
-	if printErrorLine {
+	text += l.getErrMsg()
+	if l.PrintErrorLine {
 		text += getCaller()
 	}
-	printText(text + fmt.Sprintf(format, v...))
+	l.printText(text + fmt.Sprintf(format, v...))
 }
 
 // Errorln prints error
 // Output pattern: (?time) [ERR] (?file:line) error
-func Errorln(v ...interface{}) {
+func (l Logger) Errorln(v ...interface{}) {
 	text := ""
-	if printTime {
-		text = getTime()
+	if l.PrintTime {
+		text = l.getTime()
 	}
-	text += getErrMsg()
-	if printErrorLine {
+	text += l.getErrMsg()
+	if l.PrintErrorLine {
 		text += getCaller()
 	}
-	printText(text + fmt.Sprintln(v...))
+	l.printText(text + fmt.Sprintln(v...))
 }

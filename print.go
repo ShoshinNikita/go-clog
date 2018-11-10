@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-func Print(v ...interface{}) {
-	printText(fmt.Sprint(v...))
+func (l Logger) Print(v ...interface{}) {
+	l.printText(fmt.Sprint(v...))
 }
 
-func Printf(format string, v ...interface{}) {
-	printText(fmt.Sprintf(format, v...))
+func (l Logger) Printf(format string, v ...interface{}) {
+	l.printText(fmt.Sprintf(format, v...))
 }
 
-func Println(v ...interface{}) {
-	printText(fmt.Sprintln(v...))
+func (l Logger) Println(v ...interface{}) {
+	l.printText(fmt.Sprintln(v...))
 }

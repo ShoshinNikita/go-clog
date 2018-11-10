@@ -5,42 +5,42 @@ import (
 	"os"
 )
 
-func Fatal(v ...interface{}) {
+func (l Logger) Fatal(v ...interface{}) {
 	text := ""
-	if printTime {
-		text = getTime()
+	if l.PrintTime {
+		text = l.getTime()
 	}
-	text += getFatalMsg()
-	if printErrorLine {
+	text += l.getFatalMsg()
+	if l.PrintErrorLine {
 		text += getCaller()
 	}
-	printText(text + fmt.Sprint(v...))
+	l.printText(text + fmt.Sprint(v...))
 	os.Exit(1)
 
 }
 
-func Fatalf(format string, v ...interface{}) {
+func (l Logger) Fatalf(format string, v ...interface{}) {
 	text := ""
-	if printTime {
-		text = getTime()
+	if l.PrintTime {
+		text = l.getTime()
 	}
-	text += getFatalMsg()
-	if printErrorLine {
+	text += l.getFatalMsg()
+	if l.PrintErrorLine {
 		text += getCaller()
 	}
-	printText(text + fmt.Sprintf(format, v...))
+	l.printText(text + fmt.Sprintf(format, v...))
 	os.Exit(1)
 }
 
-func Fatalln(v ...interface{}) {
+func (l Logger) Fatalln(v ...interface{}) {
 	text := ""
-	if printTime {
-		text = getTime()
+	if l.PrintTime {
+		text = l.getTime()
 	}
-	text += getFatalMsg()
-	if printErrorLine {
+	text += l.getFatalMsg()
+	if l.PrintErrorLine {
 		text += getCaller()
 	}
-	printText(text + fmt.Sprint(v...))
+	l.printText(text + fmt.Sprint(v...))
 	os.Exit(1)
 }
