@@ -30,9 +30,9 @@ const (
 func init() {
 	globalLogger = NewLogger()
 
-	globalLogger.PrintTime = false
-	globalLogger.PrintColor = true
-	globalLogger.PrintErrorLine = true
+	globalLogger.PrintTime(false)
+	globalLogger.PrintColor(true)
+	globalLogger.PrintErrorLine(true)
 
 	globalLogger.global = true
 }
@@ -51,9 +51,9 @@ func (t *textStruct) done() {
 }
 
 type Logger struct {
-	PrintTime      bool
-	PrintColor     bool
-	PrintErrorLine bool
+	printTime      bool
+	printColor     bool
+	printErrorLine bool
 
 	printChan chan textStruct
 	global    bool
@@ -67,17 +67,32 @@ func NewLogger() *Logger {
 	return l
 }
 
-func (l *Logger) printer() {
+func (l Logger) printer() {
 	for text := range l.printChan {
 		fmt.Fprint(color.Output, text.text)
 		text.done()
 	}
 }
 
-func (l *Logger) printText(text string) {
+func (l Logger) printText(text string) {
 	t := newText(text)
 	l.printChan <- t
 	<-t.ch
+}
+
+// PrintTime sets Logger.printTime to b
+func (l *Logger) PrintTime(b bool) {
+	l.printTime = b
+}
+
+// PrintColor sets Logger.printColor to b
+func (l *Logger) PrintColor(b bool) {
+	l.printColor = b
+}
+
+// PrintErrorLine sets Logger.printErrorLine to b
+func (l *Logger) PrintErrorLine(b bool) {
+	l.printErrorLine = b
 }
 
 var globalLogger *Logger
@@ -85,7 +100,7 @@ var globalLogger *Logger
 // PrintTime sets globalLogger.PrintTime
 // Time isn't printed by default
 func PrintTime(b bool) {
-	globalLogger.PrintTime = b
+	globalLogger.PrintTime(b)
 }
 
 // ShowTime sets printTime
@@ -97,7 +112,7 @@ var ShowTime = PrintTime
 // PrintColor sets printColor
 // printColor is true by default
 func PrintColor(b bool) {
-	globalLogger.PrintColor = b
+	globalLogger.PrintColor(b)
 }
 
 // PrintErrorLine sets PrintErrorLine
@@ -105,7 +120,7 @@ func PrintColor(b bool) {
 // where functions were called.
 // PrintErrorLine is true by default
 func PrintErrorLine(b bool) {
-	globalLogger.PrintErrorLine = b
+	globalLogger.PrintErrorLine(b)
 }
 
 /* Print */

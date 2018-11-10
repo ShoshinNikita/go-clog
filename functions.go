@@ -52,35 +52,35 @@ func (l Logger) getCaller() string {
 }
 
 func (l Logger) getTime() string {
-	if l.PrintColor {
+	if l.printColor {
 		return timePrintf("%s ", time.Now().Format(timeLayout))
 	}
 	return fmt.Sprintf("%s ", time.Now().Format(timeLayout))
 }
 
 func (l Logger) getInfoMsg() string {
-	if l.PrintColor {
+	if l.printColor {
 		return infoPrint("[INFO] ")
 	}
 	return "[INFO] "
 }
 
 func (l Logger) getWarnMsg() string {
-	if l.PrintColor {
+	if l.printColor {
 		return warnPrint("[WARN] ")
 	}
 	return "[WARN] "
 }
 
 func (l Logger) getErrMsg() string {
-	if l.PrintColor {
+	if l.printColor {
 		return errorPrint("[ERR] ")
 	}
 	return "[ERR] "
 }
 
 func (l Logger) getFatalMsg() (s string) {
-	if l.PrintColor {
+	if l.printColor {
 		return fatalPrint("[FATAL]") + " "
 	}
 	return "[FATAL] "

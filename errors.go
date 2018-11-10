@@ -8,11 +8,11 @@ import (
 // Output pattern: (?time) [ERR] (?file:line) error
 func (l Logger) Error(v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getErrMsg()
-	if l.PrintErrorLine {
+	if l.printErrorLine {
 		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprint(v...))
@@ -22,11 +22,11 @@ func (l Logger) Error(v ...interface{}) {
 // Output pattern: (?time) [ERR] (?file:line) error
 func (l Logger) Errorf(format string, v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getErrMsg()
-	if l.PrintErrorLine {
+	if l.printErrorLine {
 		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprintf(format, v...))
@@ -36,11 +36,11 @@ func (l Logger) Errorf(format string, v ...interface{}) {
 // Output pattern: (?time) [ERR] (?file:line) error
 func (l Logger) Errorln(v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getErrMsg()
-	if l.PrintErrorLine {
+	if l.printErrorLine {
 		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprintln(v...))

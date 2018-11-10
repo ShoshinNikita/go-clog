@@ -8,7 +8,7 @@ import (
 // Output pattern: (?time) [INFO] msg
 func (l Logger) Info(v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getInfoMsg()
@@ -19,7 +19,7 @@ func (l Logger) Info(v ...interface{}) {
 // Output pattern: (?time) [INFO] msg
 func (l Logger) Infof(format string, v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getInfoMsg()
@@ -30,7 +30,7 @@ func (l Logger) Infof(format string, v ...interface{}) {
 // Output pattern: (?time) [INFO] msg
 func (l Logger) Infoln(v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getInfoMsg()

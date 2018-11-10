@@ -9,11 +9,11 @@ import (
 // Output pattern: (?time) [FATAL] (?file:line) error
 func (l Logger) Fatal(v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getFatalMsg()
-	if l.PrintErrorLine {
+	if l.printErrorLine {
 		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprint(v...))
@@ -25,11 +25,11 @@ func (l Logger) Fatal(v ...interface{}) {
 // Output pattern: (?time) [FATAL] (?file:line) error
 func (l Logger) Fatalf(format string, v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getFatalMsg()
-	if l.PrintErrorLine {
+	if l.printErrorLine {
 		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprintf(format, v...))
@@ -40,11 +40,11 @@ func (l Logger) Fatalf(format string, v ...interface{}) {
 // Output pattern: (?time) [FATAL] (?file:line) error
 func (l Logger) Fatalln(v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getFatalMsg()
-	if l.PrintErrorLine {
+	if l.printErrorLine {
 		text += l.getCaller()
 	}
 	l.printText(text + fmt.Sprint(v...))

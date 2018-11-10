@@ -8,7 +8,7 @@ import (
 // Output pattern: (?time) [WARN] warning
 func (l Logger) Warn(v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getWarnMsg()
@@ -19,7 +19,7 @@ func (l Logger) Warn(v ...interface{}) {
 // Output pattern: (?time) [WARN] warning
 func (l Logger) Warnf(format string, v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getWarnMsg()
@@ -30,7 +30,7 @@ func (l Logger) Warnf(format string, v ...interface{}) {
 // Output pattern: (?time) [WARN] warning
 func (l Logger) Warnln(v ...interface{}) {
 	text := ""
-	if l.PrintTime {
+	if l.printTime {
 		text = l.getTime()
 	}
 	text += l.getWarnMsg()
