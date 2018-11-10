@@ -4,6 +4,25 @@ import (
 	"fmt"
 	"runtime"
 	"time"
+
+	"github.com/fatih/color"
+)
+
+var (
+	// For time
+	timePrintf = color.New(color.FgHiGreen).SprintfFunc()
+
+	// For [INFO]
+	infoPrint = color.New(color.FgCyan).SprintFunc()
+
+	// For [WARN]
+	warnPrint = color.New(color.FgYellow).SprintFunc()
+
+	// For [ERR]
+	errorPrint = color.New(color.FgRed).SprintFunc()
+
+	// For [FATAL]
+	fatalPrint = color.New(color.BgRed).SprintFunc()
 )
 
 func getCaller() string {

@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+// Fatal prints error and call os.Exit(1)
+// Output pattern: (?time) [FATAL] (?file:line) error
 func (l Logger) Fatal(v ...interface{}) {
 	text := ""
 	if l.PrintTime {
@@ -19,6 +21,8 @@ func (l Logger) Fatal(v ...interface{}) {
 
 }
 
+// Fatalf prints error and call os.Exit(1)
+// Output pattern: (?time) [FATAL] (?file:line) error
 func (l Logger) Fatalf(format string, v ...interface{}) {
 	text := ""
 	if l.PrintTime {
@@ -32,6 +36,8 @@ func (l Logger) Fatalf(format string, v ...interface{}) {
 	os.Exit(1)
 }
 
+// Fatalln prints error and call os.Exit(1)
+// Output pattern: (?time) [FATAL] (?file:line) error
 func (l Logger) Fatalln(v ...interface{}) {
 	text := ""
 	if l.PrintTime {
