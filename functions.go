@@ -25,7 +25,12 @@ var (
 	fatalPrint = color.New(color.BgRed).SprintFunc()
 )
 
+// getTime returns "file:line" if l.printErrorLine == true, else it returns empty string
 func (l Logger) getCaller() string {
+	if !l.printErrorLine {
+		return ""
+	}
+
 	var (
 		file string
 		line int
@@ -51,7 +56,12 @@ func (l Logger) getCaller() string {
 	return fmt.Sprintf("%s:%d ", shortFile, line)
 }
 
+// getTime returns time if l.printTime == true, else it returns empty string
 func (l Logger) getTime() string {
+	if !l.printTime {
+		return ""
+	}
+
 	if l.printColor {
 		return timePrintf("%s ", time.Now().Format(timeLayout))
 	}
