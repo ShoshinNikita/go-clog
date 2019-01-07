@@ -62,7 +62,7 @@ type Logger struct {
 // NewLogger creates *Logger and run goroutine (Logger.printer())
 func NewLogger() *Logger {
 	l := new(Logger)
-	l.printChan = make(chan textStruct)
+	l.printChan = make(chan textStruct, 200)
 	go l.printer()
 	return l
 }
