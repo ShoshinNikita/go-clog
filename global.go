@@ -1,5 +1,9 @@
 package log
 
+import (
+	"io"
+)
+
 var globalLogger *Logger
 
 // init inits globalLogger with NewLogger()
@@ -37,6 +41,12 @@ func PrintColor(b bool) {
 // PrintErrorLine is false by default
 func PrintErrorLine(b bool) {
 	globalLogger.PrintErrorLine(b)
+}
+
+// ChangeOutput changes Logger.output writer.
+// Default Logger.output is github.com/fatih/color.Output
+func ChangeOutput(w io.Writer) {
+	globalLogger.ChangeOutput(w)
 }
 
 /* Print */

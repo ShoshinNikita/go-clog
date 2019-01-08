@@ -18,6 +18,7 @@ package log
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/fatih/color"
 )
@@ -46,24 +47,27 @@ type Logger struct {
 
 	printChan chan textStruct
 	global    bool
+
+	output io.Writer
 }
 
 // NewLogger creates *Logger and run goroutine (Logger.printer())
 func NewLogger() *Logger {
 	l := new(Logger)
+	l.output = color.Output
 	l.printChan = make(chan textStruct, 200)
 	go l.printer()
 	return l
 }
 
-func (l Logger) printer() {
+func (l *Logger) printer() {
 	for text := range l.printChan {
-		fmt.Fprint(color.Output, text.text)
+		fmt.Fprint(l.output, text.text)
 		text.done()
 	}
 }
 
-func (l Logger) printText(text string) {
+func (l *Logger) printText(text string) {
 	t := newText(text)
 	l.printChan <- t
 	<-t.ch
@@ -82,4 +86,10 @@ func (l *Logger) PrintColor(b bool) {
 // PrintErrorLine sets Logger.printErrorLine to b
 func (l *Logger) PrintErrorLine(b bool) {
 	l.printErrorLine = b
+}
+
+// ChangeOutput changes Logger.output writer.
+// Default Logger.output is github.com/fatih/color.Output
+func (l *Logger) ChangeOutput(w io.Writer) {
+	l.output = w
 }
