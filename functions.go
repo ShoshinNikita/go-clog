@@ -9,25 +9,26 @@ import (
 	"github.com/fatih/color"
 )
 
+const (
+	usualINFO  = "[INFO]  "
+	usualWARN  = "[WARN]  "
+	usualERR   = "[ERR]   "
+	usualFATAL = "[FATAL] "
+)
+
 var (
 	// For time
 	timePrintf = color.New(color.FgHiGreen).SprintfFunc()
 
-	// For [INFO]
-	infoPrint = color.New(color.FgCyan).SprintFunc()
-
-	// For [WARN]
-	warnPrint = color.New(color.FgYellow).SprintFunc()
-
-	// For [ERR]
-	errorPrint = color.New(color.FgRed).SprintFunc()
-
-	// For [FATAL]
-	fatalPrint = color.New(color.BgRed).SprintFunc()
+	coloredINFO  = color.CyanString(usualINFO)
+	coloredWARN  = color.YellowString(usualWARN)
+	coloredERR   = color.RedString(usualERR)
+	coloredFATAL = color.New(color.BgRed).Sprint("[FATAL]") + " "
 )
 
 // getTime returns "file:line" if l.printErrorLine == true, else it returns empty string
 func (l Logger) getCaller() string {
+
 	if !l.printErrorLine {
 		return ""
 	}
@@ -71,30 +72,30 @@ func (l Logger) getTime() string {
 
 func (l Logger) getInfoMsg() string {
 	if l.printColor {
-		return infoPrint("[INFO] ")
+		return coloredINFO
 	}
-	return "[INFO] "
+	return usualINFO
 }
 
 func (l Logger) getWarnMsg() string {
 	if l.printColor {
-		return warnPrint("[WARN] ")
+		return coloredWARN
 	}
-	return "[WARN] "
+	return usualWARN
 }
 
 func (l Logger) getErrMsg() string {
 	if l.printColor {
-		return errorPrint("[ERR] ")
+		return coloredERR
 	}
-	return "[ERR] "
+	return usualERR
 }
 
 func (l Logger) getFatalMsg() (s string) {
 	if l.printColor {
-		return fatalPrint("[FATAL]") + " "
+		return coloredFATAL
 	}
-	return "[FATAL] "
+	return usualFATAL
 }
 
 type prefixFunc func() string
