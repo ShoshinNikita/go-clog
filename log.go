@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	timeLayout = "01.02.2006 15:04:05"
+	DefaultTimeLayout = "01.02.2006 15:04:05"
 )
 
 type textStruct struct {
@@ -48,13 +48,15 @@ type Logger struct {
 	printChan chan textStruct
 	global    bool
 
-	output io.Writer
+	output     io.Writer
+	timeLayout string
 }
 
 // NewLogger creates *Logger and run goroutine (Logger.printer())
 func NewLogger() *Logger {
 	l := new(Logger)
 	l.output = color.Output
+	l.timeLayout = DefaultTimeLayout
 	l.printChan = make(chan textStruct, 200)
 	go l.printer()
 	return l
@@ -92,4 +94,10 @@ func (l *Logger) PrintErrorLine(b bool) {
 // Default Logger.output is github.com/fatih/color.Output
 func (l *Logger) ChangeOutput(w io.Writer) {
 	l.output = w
+}
+
+// ChangeTimeLayout changes Logger.timeLayout
+// Default Logger.timeLayout is DefaultTimeLayout
+func (l *Logger) ChangeTimeLayout(layout string) {
+	l.timeLayout = layout
 }

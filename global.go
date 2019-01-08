@@ -49,6 +49,12 @@ func ChangeOutput(w io.Writer) {
 	globalLogger.ChangeOutput(w)
 }
 
+// ChangeTimeLayout changes Logger.timeLayout
+// Default Logger.timeLayout is DefaultTimeLayout
+func ChangeTimeLayout(layout string) {
+	globalLogger.ChangeTimeLayout(layout)
+}
+
 /* Print */
 
 // Print prints msg

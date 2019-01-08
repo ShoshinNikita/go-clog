@@ -64,9 +64,9 @@ func (l Logger) getTime() string {
 	}
 
 	if l.printColor {
-		return timePrintf("%s ", time.Now().Format(timeLayout))
+		return timePrintf("%s ", time.Now().Format(l.timeLayout))
 	}
-	return fmt.Sprintf("%s ", time.Now().Format(timeLayout))
+	return fmt.Sprintf("%s ", time.Now().Format(l.timeLayout))
 }
 
 func (l Logger) getInfoMsg() string {
