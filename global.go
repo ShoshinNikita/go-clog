@@ -2,6 +2,17 @@ package log
 
 var globalLogger *Logger
 
+// init inits globalLogger with NewLogger()
+func init() {
+	globalLogger = NewLogger()
+
+	globalLogger.PrintTime(false)
+	globalLogger.PrintColor(false)
+	globalLogger.PrintErrorLine(false)
+
+	globalLogger.global = true
+}
+
 // PrintTime sets globalLogger.PrintTime
 // Time isn't printed by default
 func PrintTime(b bool) {

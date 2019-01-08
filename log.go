@@ -26,17 +26,6 @@ const (
 	timeLayout = "01.02.2006 15:04:05"
 )
 
-// init inits globalLogger with NewLogger()
-func init() {
-	globalLogger = NewLogger()
-
-	globalLogger.PrintTime(false)
-	globalLogger.PrintColor(false)
-	globalLogger.PrintErrorLine(false)
-
-	globalLogger.global = true
-}
-
 type textStruct struct {
 	text string
 	ch   chan struct{}
