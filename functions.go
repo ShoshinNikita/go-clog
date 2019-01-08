@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	"runtime"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
@@ -38,9 +39,9 @@ func (l Logger) getCaller() string {
 	)
 
 	if l.global {
-		_, file, line, ok = runtime.Caller(3)
+		_, file, line, ok = runtime.Caller(5)
 	} else {
-		_, file, line, ok = runtime.Caller(2)
+		_, file, line, ok = runtime.Caller(4)
 	}
 	if !ok {
 		return ""
@@ -94,4 +95,18 @@ func (l Logger) getFatalMsg() (s string) {
 		return fatalPrint("[FATAL]") + " "
 	}
 	return "[FATAL] "
+}
+
+type prefixFunc func() string
+
+// addPrefixes adds prefixes. It uses strings.Builder
+func addPrefixes(str string, prefixes ...prefixFunc) string {
+	b := strings.Builder{}
+
+	for _, f := range prefixes {
+		b.WriteString(f())
+	}
+	b.WriteString(str)
+
+	return b.String()
 }

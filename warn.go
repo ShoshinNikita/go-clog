@@ -7,29 +7,17 @@ import (
 // Warn prints warning
 // Output pattern: (?time) [WARN] warning
 func (l Logger) Warn(v ...interface{}) {
-	text := ""
-	text = l.getTime()
-
-	text += l.getWarnMsg()
-	l.printText(text + fmt.Sprint(v...))
+	l.printText(addPrefixes(fmt.Sprint(v...), l.getTime, l.getWarnMsg))
 }
 
 // Warnf prints warning
 // Output pattern: (?time) [WARN] warning
 func (l Logger) Warnf(format string, v ...interface{}) {
-	text := ""
-	text = l.getTime()
-
-	text += l.getWarnMsg()
-	l.printText(text + fmt.Sprintf(format, v...))
+	l.printText(addPrefixes(fmt.Sprintf(format, v...), l.getTime, l.getWarnMsg))
 }
 
 // Warnln prints warning
 // Output pattern: (?time) [WARN] warning
 func (l Logger) Warnln(v ...interface{}) {
-	text := ""
-	text = l.getTime()
-
-	text += l.getWarnMsg()
-	l.printText(text + fmt.Sprintln(v...))
+	l.printText(addPrefixes(fmt.Sprintln(v...), l.getTime, l.getWarnMsg))
 }
