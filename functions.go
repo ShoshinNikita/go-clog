@@ -17,8 +17,8 @@ const (
 )
 
 var (
-	// For time
-	timePrintf = color.New(color.FgHiGreen).SprintfFunc()
+	timePrintf   = color.New(color.FgHiGreen).SprintfFunc()
+	callerPrintf = color.RedString // color is the same as coloredErr
 
 	coloredINFO  = color.CyanString(usualINFO)
 	coloredWARN  = color.YellowString(usualWARN)
@@ -54,6 +54,10 @@ func (l Logger) getCaller() string {
 			shortFile = file[i+1:]
 			break
 		}
+	}
+
+	if l.printColor {
+		return callerPrintf("%s:%d ", shortFile, line)
 	}
 	return fmt.Sprintf("%s:%d ", shortFile, line)
 }
