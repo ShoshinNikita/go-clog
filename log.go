@@ -17,8 +17,8 @@
 package log
 
 import (
-	"fmt"
 	"io"
+	"log"
 
 	"github.com/fatih/color"
 )
@@ -27,26 +27,12 @@ const (
 	DefaultTimeLayout = "01.02.2006 15:04:05"
 )
 
-type textStruct struct {
-	text string
-	ch   chan struct{}
-}
-
-func newText(text string) textStruct {
-	return textStruct{text: text, ch: make(chan struct{})}
-}
-
-func (t *textStruct) done() {
-	close(t.ch)
-}
-
 type Logger struct {
 	printTime      bool
 	printColor     bool
 	printErrorLine bool
 
-	printChan chan textStruct
-	global    bool
+	global bool
 
 	output     io.Writer
 	timeLayout string
@@ -57,22 +43,11 @@ func NewLogger() *Logger {
 	l := new(Logger)
 	l.output = color.Output
 	l.timeLayout = DefaultTimeLayout
-	l.printChan = make(chan textStruct, 200)
-	go l.printer()
 	return l
 }
 
-func (l *Logger) printer() {
-	for text := range l.printChan {
-		fmt.Fprint(l.output, text.text)
-		text.done()
-	}
-}
-
 func (l *Logger) printText(text string) {
-	t := newText(text)
-	l.printChan <- t
-	<-t.ch
+	log.Print(text)
 }
 
 // PrintTime sets Logger.printTime to b
@@ -93,7 +68,8 @@ func (l *Logger) PrintErrorLine(b bool) {
 // ChangeOutput changes Logger.output writer.
 // Default Logger.output is github.com/fatih/color.Output
 func (l *Logger) ChangeOutput(w io.Writer) {
-	l.output = w
+	// l.output = w
+	log.SetOutput(w)
 }
 
 // ChangeTimeLayout changes Logger.timeLayout
