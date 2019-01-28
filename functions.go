@@ -36,9 +36,9 @@ func (l Logger) getCaller() []byte {
 	)
 
 	if l.global {
-		_, file, line, ok = runtime.Caller(5)
+		_, file, line, ok = runtime.Caller(3)
 	} else {
-		_, file, line, ok = runtime.Caller(4)
+		_, file, line, ok = runtime.Caller(2)
 	}
 	if !ok {
 		return nil
