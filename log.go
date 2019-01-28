@@ -18,7 +18,7 @@ package log
 
 import (
 	"io"
-	"log"
+	"sync"
 
 	"github.com/fatih/color"
 )
@@ -34,7 +34,9 @@ type Logger struct {
 
 	global bool
 
-	output     io.Writer
+	output io.Writer
+	mutex  *sync.Mutex
+
 	timeLayout string
 }
 
@@ -43,11 +45,8 @@ func NewLogger() *Logger {
 	l := new(Logger)
 	l.output = color.Output
 	l.timeLayout = DefaultTimeLayout
+	l.mutex = new(sync.Mutex)
 	return l
-}
-
-func (l *Logger) printText(text string) {
-	log.Print(text)
 }
 
 // PrintTime sets Logger.printTime to b
@@ -68,8 +67,7 @@ func (l *Logger) PrintErrorLine(b bool) {
 // ChangeOutput changes Logger.output writer.
 // Default Logger.output is github.com/fatih/color.Output
 func (l *Logger) ChangeOutput(w io.Writer) {
-	// l.output = w
-	log.SetOutput(w)
+	l.output = w
 }
 
 // ChangeTimeLayout changes Logger.timeLayout
