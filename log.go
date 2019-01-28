@@ -42,6 +42,20 @@ type Logger struct {
 	timeLayout     string
 }
 
+func (l *Logger) Write(b []byte) {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+
+	l.output.Write(b)
+}
+
+func (l *Logger) WriteString(s string) {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+
+	l.output.Write([]byte(s))
+}
+
 func NewDevLogger() *Logger {
 	return NewDevConfig().Build()
 }
