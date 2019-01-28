@@ -72,50 +72,59 @@ type Config struct {
 	timeLayout     string
 }
 
+// Build create a new Logger according to Config
 func (c *Config) Build() *Logger {
 	l := new(Logger)
 	l.mutex = new(sync.Mutex)
 
-	l.output = color.Output
-	if c.output != nil {
+	switch {
+	case c.printColor && c.output == nil:
+		l.output = color.Output
+	case c.output != nil:
 		l.output = c.output
+	default:
+		l.output = os.Stdout
 	}
+
 	l.printTime = c.printTime
 	l.printColor = c.printColor
 	l.printErrorLine = c.printErrorLine
-	l.timeLayout = c.timeLayout
+
+	l.timeLayout = DefaultTimeLayout
+	if c.timeLayout != "" {
+		l.timeLayout = c.timeLayout
+	}
 
 	return l
 }
 
-// PrintTime sets Logger.printTime to b
+// PrintTime sets Config.printTime to b
 func (c *Config) PrintTime(b bool) *Config {
 	c.printTime = b
 	return c
 }
 
-// PrintColor sets Logger.printColor to b
+// PrintColor sets Config.printColor to b
 func (c *Config) PrintColor(b bool) *Config {
 	c.printColor = b
 	return c
 }
 
-// PrintErrorLine sets Logger.printErrorLine to b
+// PrintErrorLine sets Config.printErrorLine to b
 func (c *Config) PrintErrorLine(b bool) *Config {
 	c.printErrorLine = b
 	return c
 }
 
-// ChangeOutput changes Logger.output writer.
-// Default Logger.output is github.com/fatih/color.Output
-func (c *Config) ChangeOutput(w io.Writer) *Config {
+// SetOutput changes Config.output writer.
+func (c *Config) SetOutput(w io.Writer) *Config {
 	c.output = w
 	return c
 }
 
-// ChangeTimeLayout changes Logger.timeLayout
-// Default Logger.timeLayout is DefaultTimeLayout
-func (c *Config) ChangeTimeLayout(layout string) *Config {
+// SetTimeLayout changes Config.timeLayout
+// Default Config.timeLayout is DefaultTimeLayout
+func (c *Config) SetTimeLayout(layout string) *Config {
 	c.timeLayout = layout
 	return c
 }
