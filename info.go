@@ -3,13 +3,16 @@ package log
 import (
 	"bytes"
 	"fmt"
+	"time"
 )
 
 // Info prints info message
 // Output pattern: (?time) [INF] msg
 func (l Logger) Info(v ...interface{}) {
+	now := time.Now()
+
 	buf := &bytes.Buffer{}
-	buf.Write(l.getTime())
+	buf.Write(l.getTime(now))
 	buf.Write(l.getInfoMsg())
 	fmt.Fprint(buf, v...)
 
@@ -21,8 +24,10 @@ func (l Logger) Info(v ...interface{}) {
 // Infof prints info message
 // Output pattern: (?time) [INF] msg
 func (l Logger) Infof(format string, v ...interface{}) {
+	now := time.Now()
+
 	buf := &bytes.Buffer{}
-	buf.Write(l.getTime())
+	buf.Write(l.getTime(now))
 	buf.Write(l.getInfoMsg())
 	fmt.Fprintf(buf, format, v...)
 
@@ -34,8 +39,10 @@ func (l Logger) Infof(format string, v ...interface{}) {
 // Infoln prints info message
 // Output pattern: (?time) [INF] msg
 func (l Logger) Infoln(v ...interface{}) {
+	now := time.Now()
+
 	buf := &bytes.Buffer{}
-	buf.Write(l.getTime())
+	buf.Write(l.getTime(now))
 	buf.Write(l.getInfoMsg())
 	fmt.Fprintln(buf, v...)
 

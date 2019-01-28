@@ -4,13 +4,16 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"time"
 )
 
 // Fatal prints error and call os.Exit(1)
 // Output pattern: (?time) [FAT] (?file:line) error
 func (l Logger) Fatal(v ...interface{}) {
+	now := time.Now()
+
 	buf := &bytes.Buffer{}
-	buf.Write(l.getTime())
+	buf.Write(l.getTime(now))
 	buf.Write(l.getFatalMsg())
 	buf.Write(l.getCaller())
 	fmt.Fprint(buf, v...)
@@ -25,8 +28,10 @@ func (l Logger) Fatal(v ...interface{}) {
 // Fatalf prints error and call os.Exit(1)
 // Output pattern: (?time) [FAT] (?file:line) error
 func (l Logger) Fatalf(format string, v ...interface{}) {
+	now := time.Now()
+
 	buf := &bytes.Buffer{}
-	buf.Write(l.getTime())
+	buf.Write(l.getTime(now))
 	buf.Write(l.getFatalMsg())
 	buf.Write(l.getCaller())
 	fmt.Fprintf(buf, format, v...)
@@ -41,8 +46,10 @@ func (l Logger) Fatalf(format string, v ...interface{}) {
 // Fatalln prints error and call os.Exit(1)
 // Output pattern: (?time) [FAT] (?file:line) error
 func (l Logger) Fatalln(v ...interface{}) {
+	now := time.Now()
+
 	buf := &bytes.Buffer{}
-	buf.Write(l.getTime())
+	buf.Write(l.getTime(now))
 	buf.Write(l.getFatalMsg())
 	buf.Write(l.getCaller())
 	fmt.Fprintln(buf, v...)

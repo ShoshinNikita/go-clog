@@ -59,15 +59,15 @@ func (l Logger) getCaller() []byte {
 }
 
 // getTime returns time if l.printTime == true, else it returns empty string
-func (l Logger) getTime() []byte {
+func (l Logger) getTime(t time.Time) []byte {
 	if !l.printTime {
 		return nil
 	}
 
 	if l.printColor {
-		return []byte(timePrintf("%s ", time.Now().Format(l.timeLayout)))
+		return []byte(timePrintf("%s ", t.Format(l.timeLayout)))
 	}
-	return []byte(time.Now().Format(l.timeLayout) + " ")
+	return []byte(t.Format(l.timeLayout) + " ")
 }
 
 func (l Logger) getInfoMsg() []byte {
