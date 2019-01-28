@@ -6,7 +6,7 @@ import (
 )
 
 // Info prints info message
-// Output pattern: (?time) [INFO] msg
+// Output pattern: (?time) [INF] msg
 func (l Logger) Info(v ...interface{}) {
 	buf := &bytes.Buffer{}
 	buf.Write(l.getTime())
@@ -19,7 +19,7 @@ func (l Logger) Info(v ...interface{}) {
 }
 
 // Infof prints info message
-// Output pattern: (?time) [INFO] msg
+// Output pattern: (?time) [INF] msg
 func (l Logger) Infof(format string, v ...interface{}) {
 	buf := &bytes.Buffer{}
 	buf.Write(l.getTime())
@@ -32,7 +32,7 @@ func (l Logger) Infof(format string, v ...interface{}) {
 }
 
 // Infoln prints info message
-// Output pattern: (?time) [INFO] msg
+// Output pattern: (?time) [INF] msg
 func (l Logger) Infoln(v ...interface{}) {
 	buf := &bytes.Buffer{}
 	buf.Write(l.getTime())

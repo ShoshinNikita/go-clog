@@ -6,7 +6,7 @@ import (
 )
 
 // Warn prints warning
-// Output pattern: (?time) [WARN] warning
+// Output pattern: (?time) [WRN] warning
 func (l Logger) Warn(v ...interface{}) {
 	buf := &bytes.Buffer{}
 	buf.Write(l.getTime())
@@ -19,7 +19,7 @@ func (l Logger) Warn(v ...interface{}) {
 }
 
 // Warnf prints warning
-// Output pattern: (?time) [WARN] warning
+// Output pattern: (?time) [WRN] warning
 func (l Logger) Warnf(format string, v ...interface{}) {
 	buf := &bytes.Buffer{}
 	buf.Write(l.getTime())
@@ -32,7 +32,7 @@ func (l Logger) Warnf(format string, v ...interface{}) {
 }
 
 // Warnln prints warning
-// Output pattern: (?time) [WARN] warning
+// Output pattern: (?time) [WRN] warning
 func (l Logger) Warnln(v ...interface{}) {
 	buf := &bytes.Buffer{}
 	buf.Write(l.getTime())

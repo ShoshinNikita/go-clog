@@ -7,7 +7,7 @@ import (
 )
 
 // Fatal prints error and call os.Exit(1)
-// Output pattern: (?time) [FATAL] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) error
 func (l Logger) Fatal(v ...interface{}) {
 	buf := &bytes.Buffer{}
 	buf.Write(l.getTime())
@@ -23,7 +23,7 @@ func (l Logger) Fatal(v ...interface{}) {
 }
 
 // Fatalf prints error and call os.Exit(1)
-// Output pattern: (?time) [FATAL] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) error
 func (l Logger) Fatalf(format string, v ...interface{}) {
 	buf := &bytes.Buffer{}
 	buf.Write(l.getTime())
@@ -39,7 +39,7 @@ func (l Logger) Fatalf(format string, v ...interface{}) {
 }
 
 // Fatalln prints error and call os.Exit(1)
-// Output pattern: (?time) [FATAL] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) error
 func (l Logger) Fatalln(v ...interface{}) {
 	buf := &bytes.Buffer{}
 	buf.Write(l.getTime())

@@ -4,13 +4,13 @@
 // * Print(), Printf(), Println():
 //   (?time) msg
 // * Info(), Infof(), Infoln():
-//   (?time) [INFO] msg
+//   (?time) [INF] msg
 // * Warn(), Warnf(), Warnln():
-//   (?time) [WARN] warning
+//   (?time) [WRN] warning
 // * Error(), Errorf(), Errorln():
 //   (?time) [ERR] (?file:line) error
 // * Fatal(), Fatalf(), Fatalln():
-//   (?time) [FATAL] (?file:line) error
+//   (?time) [FAT] (?file:line) error
 //
 // Time pattern: MM.dd.yyyy hh:mm:ss (01.30.2018 05:5:59)
 //
@@ -28,19 +28,18 @@ const (
 )
 
 type Logger struct {
-	printTime      bool
-	printColor     bool
-	printErrorLine bool
-
-	global bool
-
 	output io.Writer
 	mutex  *sync.Mutex
 
-	timeLayout string
+	global bool
+
+	printTime      bool
+	printColor     bool
+	printErrorLine bool
+	timeLayout     string
 }
 
-// NewLogger creates *Logger and run goroutine (Logger.printer())
+// NewLogger creates *Logger
 func NewLogger() *Logger {
 	l := new(Logger)
 	l.output = color.Output

@@ -78,19 +78,19 @@ func Println(v ...interface{}) {
 /* Info */
 
 // Info prints info message
-// Output pattern: (?time) [INFO] msg
+// Output pattern: (?time) [INF] msg
 func Info(v ...interface{}) {
 	globalLogger.Info(v...)
 }
 
 // Infof prints info message
-// Output pattern: (?time) [INFO] msg
+// Output pattern: (?time) [INF] msg
 func Infof(format string, v ...interface{}) {
 	globalLogger.Infof(format, v...)
 }
 
 // Infoln prints info message
-// Output pattern: (?time) [INFO] msg
+// Output pattern: (?time) [INF] msg
 func Infoln(v ...interface{}) {
 	globalLogger.Infoln(v...)
 }
@@ -98,19 +98,19 @@ func Infoln(v ...interface{}) {
 /* Warn */
 
 // Warn prints warning
-// Output pattern: (?time) [WARN] warning
+// Output pattern: (?time) [WRN] warning
 func Warn(v ...interface{}) {
 	globalLogger.Warn(v...)
 }
 
 // Warnf prints warning
-// Output pattern: (?time) [WARN] warning
+// Output pattern: (?time) [WRN] warning
 func Warnf(format string, v ...interface{}) {
 	globalLogger.Warnf(format, v...)
 }
 
 // Warnln prints warning
-// Output pattern: (?time) [WARN] warning
+// Output pattern: (?time) [WRN] warning
 func Warnln(v ...interface{}) {
 	globalLogger.Warnln(v...)
 }
@@ -138,19 +138,19 @@ func Errorln(v ...interface{}) {
 /* Fatal */
 
 // Fatal prints error and call os.Exit(1)
-// Output pattern: (?time) [FATAL] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) error
 func Fatal(v ...interface{}) {
 	globalLogger.Fatal(v...)
 }
 
 // Fatalf prints error and call os.Exit(1)
-// Output pattern: (?time) [FATAL] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) error
 func Fatalf(format string, v ...interface{}) {
 	globalLogger.Fatalf(format, v...)
 }
 
 // Fatalln prints error and call os.Exit(1)
-// Output pattern: (?time) [FATAL] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) error
 func Fatalln(v ...interface{}) {
 	globalLogger.Fatalln(v...)
 }
