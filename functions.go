@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	usualINFO  = "[INFO]  "
-	usualWARN  = "[WARN]  "
-	usualERR   = "[ERR]   "
-	usualFATAL = "[FATAL] "
+	usualINFO  = "[INF] "
+	usualWARN  = "[WRN] "
+	usualERR   = "[ERR] "
+	usualFATAL = "[FAT] "
 )
 
 var (
@@ -23,7 +23,7 @@ var (
 	coloredINFO  = color.CyanString(usualINFO)
 	coloredWARN  = color.YellowString(usualWARN)
 	coloredERR   = color.RedString(usualERR)
-	coloredFATAL = color.New(color.BgRed).Sprint("[FATAL]") + " "
+	coloredFATAL = color.New(color.BgRed).Sprint("[FAT]") + " "
 )
 
 // getTime returns "file:line" if l.printErrorLine == true, else it returns empty string
