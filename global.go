@@ -1,58 +1,11 @@
 package log
 
-import (
-	"io"
-)
-
 var globalLogger *Logger
 
 // init inits globalLogger with NewLogger()
 func init() {
-	globalLogger = NewLogger()
-
-	globalLogger.PrintTime(false)
-	globalLogger.PrintColor(false)
-	globalLogger.PrintErrorLine(false)
-
+	globalLogger = NewProdLogger()
 	globalLogger.global = true
-}
-
-// PrintTime sets globalLogger.PrintTime
-// Time isn't printed by default
-func PrintTime(b bool) {
-	globalLogger.PrintTime(b)
-}
-
-// ShowTime sets printTime
-// Time isn't printed by default
-//
-// It was left for backwards compatibility
-var ShowTime = PrintTime
-
-// PrintColor sets printColor
-// printColor is false by default
-func PrintColor(b bool) {
-	globalLogger.PrintColor(b)
-}
-
-// PrintErrorLine sets PrintErrorLine
-// If PrintErrorLine is true, log.Error(), log.Errorf(), log.Errorln() will print file and line,
-// where functions were called.
-// PrintErrorLine is false by default
-func PrintErrorLine(b bool) {
-	globalLogger.PrintErrorLine(b)
-}
-
-// ChangeOutput changes Logger.output writer.
-// Default Logger.output is github.com/fatih/color.Output
-func ChangeOutput(w io.Writer) {
-	globalLogger.ChangeOutput(w)
-}
-
-// ChangeTimeLayout changes Logger.timeLayout
-// Default Logger.timeLayout is DefaultTimeLayout
-func ChangeTimeLayout(layout string) {
-	globalLogger.ChangeTimeLayout(layout)
 }
 
 /* Print */

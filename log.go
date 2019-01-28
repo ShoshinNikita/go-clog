@@ -18,6 +18,7 @@ package log
 
 import (
 	"io"
+	"os"
 	"sync"
 
 	"github.com/fatih/color"
@@ -39,43 +40,82 @@ type Logger struct {
 	timeLayout     string
 }
 
-// NewLogger creates *Logger
-func NewLogger() *Logger {
+func NewDevLogger() *Logger {
+	c := &Config{
+		output:         color.Output,
+		printTime:      true,
+		printColor:     true,
+		printErrorLine: true,
+		timeLayout:     DefaultTimeLayout,
+	}
+
+	return c.Build()
+}
+
+func NewProdLogger() *Logger {
+	c := &Config{
+		output:         os.Stdout,
+		printTime:      true,
+		printColor:     false,
+		printErrorLine: true,
+		timeLayout:     DefaultTimeLayout,
+	}
+
+	return c.Build()
+}
+
+type Config struct {
+	output         io.Writer
+	printTime      bool
+	printColor     bool
+	printErrorLine bool
+	timeLayout     string
+}
+
+func (c *Config) Build() *Logger {
 	l := new(Logger)
-	l.output = color.Output
-	l.timeLayout = DefaultTimeLayout
 	l.mutex = new(sync.Mutex)
+
+	l.output = color.Output
+	if c.output != nil {
+		l.output = c.output
+	}
+	l.printTime = c.printTime
+	l.printColor = c.printColor
+	l.printErrorLine = c.printErrorLine
+	l.timeLayout = c.timeLayout
+
 	return l
 }
 
 // PrintTime sets Logger.printTime to b
-func (l *Logger) PrintTime(b bool) *Logger {
-	l.printTime = b
-	return l
+func (c *Config) PrintTime(b bool) *Config {
+	c.printTime = b
+	return c
 }
 
 // PrintColor sets Logger.printColor to b
-func (l *Logger) PrintColor(b bool) *Logger {
-	l.printColor = b
-	return l
+func (c *Config) PrintColor(b bool) *Config {
+	c.printColor = b
+	return c
 }
 
 // PrintErrorLine sets Logger.printErrorLine to b
-func (l *Logger) PrintErrorLine(b bool) *Logger {
-	l.printErrorLine = b
-	return l
+func (c *Config) PrintErrorLine(b bool) *Config {
+	c.printErrorLine = b
+	return c
 }
 
 // ChangeOutput changes Logger.output writer.
 // Default Logger.output is github.com/fatih/color.Output
-func (l *Logger) ChangeOutput(w io.Writer) *Logger {
-	l.output = w
-	return l
+func (c *Config) ChangeOutput(w io.Writer) *Config {
+	c.output = w
+	return c
 }
 
 // ChangeTimeLayout changes Logger.timeLayout
 // Default Logger.timeLayout is DefaultTimeLayout
-func (l *Logger) ChangeTimeLayout(layout string) *Logger {
-	l.timeLayout = layout
-	return l
+func (c *Config) ChangeTimeLayout(layout string) *Config {
+	c.timeLayout = layout
+	return c
 }
