@@ -41,27 +41,11 @@ type Logger struct {
 }
 
 func NewDevLogger() *Logger {
-	c := &Config{
-		output:         color.Output,
-		printTime:      true,
-		printColor:     true,
-		printErrorLine: true,
-		timeLayout:     DefaultTimeLayout,
-	}
-
-	return c.Build()
+	return NewDevConfig().Build()
 }
 
 func NewProdLogger() *Logger {
-	c := &Config{
-		output:         os.Stdout,
-		printTime:      true,
-		printColor:     false,
-		printErrorLine: true,
-		timeLayout:     DefaultTimeLayout,
-	}
-
-	return c.Build()
+	return NewProdConfig().Build()
 }
 
 type Config struct {
@@ -70,6 +54,26 @@ type Config struct {
 	printColor     bool
 	printErrorLine bool
 	timeLayout     string
+}
+
+func NewDevConfig() *Config {
+	return &Config{
+		output:         color.Output,
+		printTime:      true,
+		printColor:     true,
+		printErrorLine: true,
+		timeLayout:     DefaultTimeLayout,
+	}
+}
+
+func NewProdConfig() *Config {
+	return &Config{
+		output:         os.Stdout,
+		printTime:      true,
+		printColor:     false,
+		printErrorLine: true,
+		timeLayout:     DefaultTimeLayout,
+	}
 }
 
 // Build create a new Logger according to Config
