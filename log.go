@@ -49,28 +49,33 @@ func NewLogger() *Logger {
 }
 
 // PrintTime sets Logger.printTime to b
-func (l *Logger) PrintTime(b bool) {
+func (l *Logger) PrintTime(b bool) *Logger {
 	l.printTime = b
+	return l
 }
 
 // PrintColor sets Logger.printColor to b
-func (l *Logger) PrintColor(b bool) {
+func (l *Logger) PrintColor(b bool) *Logger {
 	l.printColor = b
+	return l
 }
 
 // PrintErrorLine sets Logger.printErrorLine to b
-func (l *Logger) PrintErrorLine(b bool) {
+func (l *Logger) PrintErrorLine(b bool) *Logger {
 	l.printErrorLine = b
+	return l
 }
 
 // ChangeOutput changes Logger.output writer.
 // Default Logger.output is github.com/fatih/color.Output
-func (l *Logger) ChangeOutput(w io.Writer) {
+func (l *Logger) ChangeOutput(w io.Writer) *Logger {
 	l.output = w
+	return l
 }
 
 // ChangeTimeLayout changes Logger.timeLayout
 // Default Logger.timeLayout is DefaultTimeLayout
-func (l *Logger) ChangeTimeLayout(layout string) {
+func (l *Logger) ChangeTimeLayout(layout string) *Logger {
 	l.timeLayout = layout
+	return l
 }
