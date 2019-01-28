@@ -3,34 +3,30 @@ package log
 import (
 	"fmt"
 	"runtime"
-	"strings"
 	"time"
 
 	"github.com/fatih/color"
 )
 
-const (
-	usualINFO  = "[INFO]  "
-	usualWARN  = "[WARN]  "
-	usualERR   = "[ERR]   "
-	usualFATAL = "[FATAL] "
-)
-
 var (
+	usualINFO  = []byte("[INF] ")
+	usualWARN  = []byte("[WRN] ")
+	usualERR   = []byte("[ERR] ")
+	usualFATAL = []byte("[FAT] ")
+
+	coloredINFO  = []byte(color.CyanString(string(usualINFO)))
+	coloredWARN  = []byte(color.YellowString(string(usualWARN)))
+	coloredERR   = []byte(color.RedString(string(usualERR)))
+	coloredFATAL = []byte(color.New(color.BgRed).Sprint("[FAT]") + " ")
+
 	timePrintf   = color.New(color.FgHiGreen).SprintfFunc()
 	callerPrintf = color.RedString // color is the same as coloredErr
-
-	coloredINFO  = color.CyanString(usualINFO)
-	coloredWARN  = color.YellowString(usualWARN)
-	coloredERR   = color.RedString(usualERR)
-	coloredFATAL = color.New(color.BgRed).Sprint("[FATAL]") + " "
 )
 
 // getTime returns "file:line" if l.printErrorLine == true, else it returns empty string
-func (l Logger) getCaller() string {
-
+func (l Logger) getCaller() []byte {
 	if !l.printErrorLine {
-		return ""
+		return nil
 	}
 
 	var (
@@ -40,12 +36,12 @@ func (l Logger) getCaller() string {
 	)
 
 	if l.global {
-		_, file, line, ok = runtime.Caller(5)
+		_, file, line, ok = runtime.Caller(3)
 	} else {
-		_, file, line, ok = runtime.Caller(4)
+		_, file, line, ok = runtime.Caller(2)
 	}
 	if !ok {
-		return ""
+		return nil
 	}
 
 	var shortFile string
@@ -57,61 +53,47 @@ func (l Logger) getCaller() string {
 	}
 
 	if l.printColor {
-		return callerPrintf("%s:%d ", shortFile, line)
+		return []byte(callerPrintf("%s:%d ", shortFile, line))
 	}
-	return fmt.Sprintf("%s:%d ", shortFile, line)
+	return []byte(fmt.Sprintf("%s:%d ", shortFile, line))
 }
 
 // getTime returns time if l.printTime == true, else it returns empty string
-func (l Logger) getTime() string {
+func (l Logger) getTime() []byte {
 	if !l.printTime {
-		return ""
+		return nil
 	}
 
 	if l.printColor {
-		return timePrintf("%s ", time.Now().Format(l.timeLayout))
+		return []byte(timePrintf("%s ", time.Now().Format(l.timeLayout)))
 	}
-	return fmt.Sprintf("%s ", time.Now().Format(l.timeLayout))
+	return []byte(time.Now().Format(l.timeLayout) + " ")
 }
 
-func (l Logger) getInfoMsg() string {
+func (l Logger) getInfoMsg() []byte {
 	if l.printColor {
 		return coloredINFO
 	}
 	return usualINFO
 }
 
-func (l Logger) getWarnMsg() string {
+func (l Logger) getWarnMsg() []byte {
 	if l.printColor {
 		return coloredWARN
 	}
 	return usualWARN
 }
 
-func (l Logger) getErrMsg() string {
+func (l Logger) getErrMsg() []byte {
 	if l.printColor {
 		return coloredERR
 	}
 	return usualERR
 }
 
-func (l Logger) getFatalMsg() (s string) {
+func (l Logger) getFatalMsg() []byte {
 	if l.printColor {
 		return coloredFATAL
 	}
 	return usualFATAL
-}
-
-type prefixFunc func() string
-
-// addPrefixes adds prefixes. It uses strings.Builder
-func addPrefixes(str string, prefixes ...prefixFunc) string {
-	b := strings.Builder{}
-
-	for _, f := range prefixes {
-		b.WriteString(f())
-	}
-	b.WriteString(str)
-
-	return b.String()
 }
