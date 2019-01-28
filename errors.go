@@ -1,7 +1,6 @@
 package log
 
 import (
-	"bytes"
 	"fmt"
 	"time"
 )
@@ -11,15 +10,17 @@ import (
 func (l Logger) Error(v ...interface{}) {
 	now := time.Now()
 
-	buf := &bytes.Buffer{}
-	buf.Write(l.getTime(now))
-	buf.Write(l.getErrMsg())
-	buf.Write(l.getCaller())
-	fmt.Fprint(buf, v...)
-
 	l.mutex.Lock()
-	l.output.Write(buf.Bytes())
-	l.mutex.Unlock()
+	defer l.mutex.Unlock()
+
+	l.buff.Reset()
+
+	l.buff.Write(l.getTime(now))
+	l.buff.Write(l.getErrMsg())
+	l.buff.Write(l.getCaller())
+	fmt.Fprint(l.buff, v...)
+
+	l.output.Write(l.buff.Bytes())
 }
 
 // Errorf prints error
@@ -27,15 +28,17 @@ func (l Logger) Error(v ...interface{}) {
 func (l Logger) Errorf(format string, v ...interface{}) {
 	now := time.Now()
 
-	buf := &bytes.Buffer{}
-	buf.Write(l.getTime(now))
-	buf.Write(l.getErrMsg())
-	buf.Write(l.getCaller())
-	fmt.Fprintf(buf, format, v...)
-
 	l.mutex.Lock()
-	l.output.Write(buf.Bytes())
-	l.mutex.Unlock()
+	defer l.mutex.Unlock()
+
+	l.buff.Reset()
+
+	l.buff.Write(l.getTime(now))
+	l.buff.Write(l.getErrMsg())
+	l.buff.Write(l.getCaller())
+	fmt.Fprintf(l.buff, format, v...)
+
+	l.output.Write(l.buff.Bytes())
 }
 
 // Errorln prints error
@@ -43,13 +46,15 @@ func (l Logger) Errorf(format string, v ...interface{}) {
 func (l Logger) Errorln(v ...interface{}) {
 	now := time.Now()
 
-	buf := &bytes.Buffer{}
-	buf.Write(l.getTime(now))
-	buf.Write(l.getErrMsg())
-	buf.Write(l.getCaller())
-	fmt.Fprintln(buf, v...)
-
 	l.mutex.Lock()
-	l.output.Write(buf.Bytes())
-	l.mutex.Unlock()
+	defer l.mutex.Unlock()
+
+	l.buff.Reset()
+
+	l.buff.Write(l.getTime(now))
+	l.buff.Write(l.getErrMsg())
+	l.buff.Write(l.getCaller())
+	fmt.Fprintln(l.buff, v...)
+
+	l.output.Write(l.buff.Bytes())
 }

@@ -17,6 +17,7 @@
 package log
 
 import (
+	"bytes"
 	"io"
 	"os"
 	"sync"
@@ -31,6 +32,7 @@ const (
 type Logger struct {
 	output io.Writer
 	mutex  *sync.Mutex
+	buff   *bytes.Buffer
 
 	global bool
 
@@ -80,6 +82,7 @@ func NewProdConfig() *Config {
 func (c *Config) Build() *Logger {
 	l := new(Logger)
 	l.mutex = new(sync.Mutex)
+	l.buff = new(bytes.Buffer)
 
 	switch {
 	case c.printColor && c.output == nil:

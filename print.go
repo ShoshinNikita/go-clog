@@ -1,7 +1,6 @@
 package log
 
 import (
-	"bytes"
 	"fmt"
 	"time"
 )
@@ -11,13 +10,15 @@ import (
 func (l Logger) Print(v ...interface{}) {
 	now := time.Now()
 
-	buf := &bytes.Buffer{}
-	buf.Write(l.getTime(now))
-	fmt.Fprint(buf, v...)
-
 	l.mutex.Lock()
-	l.output.Write(buf.Bytes())
-	l.mutex.Unlock()
+	defer l.mutex.Unlock()
+
+	l.buff.Reset()
+
+	l.buff.Write(l.getTime(now))
+	fmt.Fprint(l.buff, v...)
+
+	l.output.Write(l.buff.Bytes())
 }
 
 // Printf prints msg
@@ -25,13 +26,15 @@ func (l Logger) Print(v ...interface{}) {
 func (l Logger) Printf(format string, v ...interface{}) {
 	now := time.Now()
 
-	buf := &bytes.Buffer{}
-	buf.Write(l.getTime(now))
-	fmt.Fprintf(buf, format, v...)
-
 	l.mutex.Lock()
-	l.output.Write(buf.Bytes())
-	l.mutex.Unlock()
+	defer l.mutex.Unlock()
+
+	l.buff.Reset()
+
+	l.buff.Write(l.getTime(now))
+	fmt.Fprintf(l.buff, format, v...)
+
+	l.output.Write(l.buff.Bytes())
 }
 
 // Println prints msg
@@ -39,11 +42,13 @@ func (l Logger) Printf(format string, v ...interface{}) {
 func (l Logger) Println(v ...interface{}) {
 	now := time.Now()
 
-	buf := &bytes.Buffer{}
-	buf.Write(l.getTime(now))
-	fmt.Fprintln(buf, v...)
-
 	l.mutex.Lock()
-	l.output.Write(buf.Bytes())
-	l.mutex.Unlock()
+	defer l.mutex.Unlock()
+
+	l.buff.Reset()
+
+	l.buff.Write(l.getTime(now))
+	fmt.Fprintln(l.buff, v...)
+
+	l.output.Write(l.buff.Bytes())
 }
