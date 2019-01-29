@@ -18,7 +18,7 @@ Pretty colored logger for Golang
 package main
 
 import (
-    clog "github.com/ShoshinNikita/log"
+    clog "github.com/ShoshinNikita/log/v2"
 )
 
 func main() {

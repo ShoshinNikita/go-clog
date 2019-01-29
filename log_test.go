@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	clog "github.com/ShoshinNikita/log"
+	clog "github.com/ShoshinNikita/log/v2"
 )
 
 const file = "test.txt"
