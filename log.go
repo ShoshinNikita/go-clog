@@ -14,7 +14,7 @@
 //
 // Time pattern: MM.dd.yyyy hh:mm:ss (01.30.2018 05:5:59)
 //
-package log
+package clog
 
 import (
 	"bytes"

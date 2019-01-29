@@ -1,4 +1,4 @@
-package log
+package clog
 
 var globalLogger *Logger
 

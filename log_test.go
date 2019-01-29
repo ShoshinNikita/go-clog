@@ -1,11 +1,11 @@
-package log_test
+package clog_test
 
 import (
 	stdlog "log"
 	"os"
 	"testing"
 
-	"github.com/ShoshinNikita/log"
+	clog "github.com/ShoshinNikita/log"
 )
 
 const file = "test.txt"
@@ -37,7 +37,7 @@ func BenchmarkDevLogPrintln(b *testing.B) {
 	}
 	defer f.Close()
 
-	l := log.NewDevConfig().SetOutput(f).Build()
+	l := clog.NewDevConfig().SetOutput(f).Build()
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -52,7 +52,7 @@ func BenchmarkDevLogErrorln(b *testing.B) {
 	}
 	defer f.Close()
 
-	l := log.NewDevConfig().SetOutput(f).Build()
+	l := clog.NewDevConfig().SetOutput(f).Build()
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -67,7 +67,7 @@ func BenchmarkProdLogPrintln(b *testing.B) {
 	}
 	defer f.Close()
 
-	l := log.NewProdConfig().SetOutput(f).Build()
+	l := clog.NewProdConfig().SetOutput(f).Build()
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -82,7 +82,7 @@ func BenchmarkProdLogErrorln(b *testing.B) {
 	}
 	defer f.Close()
 
-	l := log.NewProdConfig().SetOutput(f).Build()
+	l := clog.NewProdConfig().SetOutput(f).Build()
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
