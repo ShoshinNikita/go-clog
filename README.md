@@ -8,7 +8,7 @@ Pretty colored logger for Golang
 
 ## Install
 
-`go get github.com/ShoshinNikita/log/v3`
+`go get github.com/ShoshinNikita/go-clog/v3`
 
 ## Example
 
@@ -18,7 +18,7 @@ Pretty colored logger for Golang
 package main
 
 import (
-    clog "github.com/ShoshinNikita/log/v3"
+    clog "github.com/ShoshinNikita/go-clog/v3"
 )
 
 func main() {
