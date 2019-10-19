@@ -6,7 +6,7 @@ import (
 )
 
 // Warn prints warning
-// Output pattern: (?time) [WRN] warning
+// Output pattern: (?time) [WRN] (?custom prefix) warning
 func (l Logger) Warn(v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintln(l.buff, v...)
@@ -16,7 +16,7 @@ func (l Logger) Warn(v ...interface{}) {
 }
 
 // Warnf prints warning
-// Output pattern: (?time) [WRN] warning
+// Output pattern: (?time) [WRN] (?custom prefix) warning
 func (l Logger) Warnf(format string, v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintf(l.buff, format, v...)
@@ -26,7 +26,7 @@ func (l Logger) Warnf(format string, v ...interface{}) {
 }
 
 // warn is an internal function for printing warning messages
-// Output pattern: (?time) [WRN] warning
+// Output pattern: (?time) [WRN] (?custom prefix) warning
 func (l Logger) warn(print messagePrintFunction) {
 	if !l.shouldPrint(LevelWarn) {
 		return
@@ -41,6 +41,7 @@ func (l Logger) warn(print messagePrintFunction) {
 
 	l.writeIntoBuffer(l.getTime(now))
 	l.writeIntoBuffer(l.getWarnPrefix())
+	l.writeIntoBuffer(l.getCustomPrefix())
 
 	print()
 

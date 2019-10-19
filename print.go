@@ -22,7 +22,7 @@ func (l *Logger) WriteString(s string) {
 }
 
 // Print prints msg
-// Output pattern: (?time) msg
+// Output pattern: (?time) (?custom prefix) msg
 func (l Logger) Print(v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintln(l.buff, v...)
@@ -32,7 +32,7 @@ func (l Logger) Print(v ...interface{}) {
 }
 
 // Printf prints msg
-// Output pattern: (?time) msg
+// Output pattern: (?time) (?custom prefix) msg
 func (l Logger) Printf(format string, v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintf(l.buff, format, v...)
@@ -50,6 +50,7 @@ func (l Logger) print(print messagePrintFunction) {
 	l.buff.Reset()
 
 	l.writeIntoBuffer(l.getTime(now))
+	l.writeIntoBuffer(l.getCustomPrefix())
 
 	print()
 
