@@ -101,6 +101,19 @@ func (l Logger) getFatalPrefix() []byte {
 
 //
 
+func (l Logger) clone() *Logger {
+	cfg := Config{
+		output:         l.output,
+		level:          l.level,
+		printColor:     l.printColor,
+		printErrorLine: l.printErrorLine,
+		printTime:      l.printTime,
+		timeLayout:     l.timeLayout,
+	}
+
+	return cfg.Build()
+}
+
 func (l Logger) shouldPrint(msgLevel LogLevel) bool {
 	if msgLevel < l.level {
 		return false
