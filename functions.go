@@ -106,3 +106,11 @@ func (l Logger) getFatalMsg() []byte {
 	}
 	return usualFATAL
 }
+
+func (l Logger) shouldPrint(msgLevel LogLevel) bool {
+	if msgLevel < l.level {
+		return false
+	}
+
+	return true
+}

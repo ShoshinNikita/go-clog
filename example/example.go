@@ -9,7 +9,7 @@ func main() {
 	// For dev use log.NewDevConfig() or log.NewDevLogger()
 
 	c := &clog.Config{}
-	l := c.PrintColor(true).PrintErrorLine(true).PrintTime(true).Debug(true).Build()
+	l := c.PrintColor(true).PrintErrorLine(true).PrintTime(true).SetLevel(clog.LevelDebug).Build()
 	l.Debug("some debug message")
 	l.Info("some info message")
 	l.Warn("some warn message")
@@ -18,7 +18,7 @@ func main() {
 	l.WriteString("\n")
 
 	c = &clog.Config{}
-	l = c.PrintColor(true).PrintErrorLine(false).PrintTime(false).Debug(true).Build()
+	l = c.PrintColor(true).PrintErrorLine(false).PrintTime(false).SetLevel(clog.LevelDebug).Build()
 	l.Debug("some debug message")
 	l.Info("some info message")
 	l.Warn("some warn message")
@@ -27,7 +27,7 @@ func main() {
 	l.WriteString("\n")
 
 	c = &clog.Config{}
-	l = c.PrintColor(false).PrintErrorLine(false).PrintTime(false).Debug(true).Build()
+	l = c.PrintColor(false).PrintErrorLine(false).PrintTime(false).SetLevel(clog.LevelDebug).Build()
 	l.Debug("some debug message")
 	l.Info("some info message")
 	l.Warn("some warn message")
@@ -36,7 +36,7 @@ func main() {
 	l.WriteString("\n")
 
 	c = &clog.Config{}
-	l = c.PrintColor(false).PrintErrorLine(false).PrintTime(false).Debug(false).Build()
+	l = c.PrintColor(false).PrintErrorLine(false).PrintTime(false).SetLevel(clog.LevelInfo).Build()
 	l.Debug("some debug message")
 	l.Info("some info message")
 	l.Warn("some warn message")

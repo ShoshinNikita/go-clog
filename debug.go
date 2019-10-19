@@ -12,7 +12,7 @@ func (l Logger) Debug(v ...interface{}) {
 		return fmt.Fprintln(l.buff, v...)
 	}
 
-	l.debugPrint(print)
+	l.debug(print)
 }
 
 // Debugf prints debug message if Debug mode is on
@@ -22,14 +22,13 @@ func (l Logger) Debugf(format string, v ...interface{}) {
 		return fmt.Fprintf(l.buff, format, v...)
 	}
 
-	l.debugPrint(print)
+	l.debug(print)
 }
 
-// TODO: update name
-// debugPrint is an internal function for printing debug messages
+// debug is an internal function for printing debug messages
 // Output pattern: (?time) [DBG] msg
-func (l Logger) debugPrint(print messagePrintFunction) {
-	if !l.debug {
+func (l Logger) debug(print messagePrintFunction) {
+	if !l.shouldPrint(LevelDebug) {
 		return
 	}
 

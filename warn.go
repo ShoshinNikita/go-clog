@@ -28,6 +28,10 @@ func (l Logger) Warnf(format string, v ...interface{}) {
 // warn is an internal function for printing warning messages
 // Output pattern: (?time) [WRN] warning
 func (l Logger) warn(print messagePrintFunction) {
+	if !l.shouldPrint(LevelWarn) {
+		return
+	}
+
 	now := time.Now()
 
 	l.mutex.Lock()

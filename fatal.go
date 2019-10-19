@@ -29,6 +29,11 @@ func (l Logger) Fatalf(format string, v ...interface{}) {
 // fatal is an internal function for printing fatal messages. Is also calls os.Exit(1)
 // Output pattern: (?time) [FAT] (?file:line) error
 func (l Logger) fatal(print messagePrintFunction) {
+	if !l.shouldPrint(LevelFatal) {
+		os.Exit(1)
+		return
+	}
+
 	now := time.Now()
 
 	l.mutex.Lock()

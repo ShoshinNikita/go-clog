@@ -28,6 +28,10 @@ func (l Logger) Errorf(format string, v ...interface{}) {
 // error is an internal function for printing error messages
 // Output pattern: (?time) [ERR] (?file:line) error
 func (l Logger) error(print messagePrintFunction) {
+	if !l.shouldPrint(LevelError) {
+		return
+	}
+
 	now := time.Now()
 
 	l.mutex.Lock()

@@ -33,6 +33,16 @@ const (
 
 type messagePrintFunction func() (int, error)
 
+type LogLevel int
+
+const (
+	LevelDebug = iota - 1
+	LevelInfo
+	LevelWarn
+	LevelError
+	LevelFatal
+)
+
 type Logger struct {
 	output io.Writer
 	mutex  *sync.Mutex
@@ -40,7 +50,7 @@ type Logger struct {
 
 	global bool
 
-	debug          bool
+	level          LogLevel
 	printTime      bool
 	printColor     bool
 	printErrorLine bool
@@ -70,18 +80,21 @@ func NewProdLogger() *Logger {
 }
 
 type Config struct {
-	output         io.Writer
-	debug          bool
-	printTime      bool
+	output io.Writer
+
+	level LogLevel
+
 	printColor     bool
 	printErrorLine bool
-	timeLayout     string
+
+	printTime  bool
+	timeLayout string
 }
 
 func NewDevConfig() *Config {
 	return &Config{
 		output:         color.Output,
-		debug:          true,
+		level:          LevelDebug,
 		printTime:      true,
 		printColor:     true,
 		printErrorLine: true,
@@ -92,7 +105,7 @@ func NewDevConfig() *Config {
 func NewProdConfig() *Config {
 	return &Config{
 		output:         os.Stdout,
-		debug:          false,
+		level:          LevelInfo,
 		printTime:      true,
 		printColor:     false,
 		printErrorLine: true,
@@ -115,7 +128,7 @@ func (c *Config) Build() *Logger {
 		l.output = os.Stdout
 	}
 
-	l.debug = c.debug
+	l.level = c.level
 	l.printTime = c.printTime
 	l.printColor = c.printColor
 	l.printErrorLine = c.printErrorLine
@@ -129,8 +142,8 @@ func (c *Config) Build() *Logger {
 }
 
 // Debug sets Config.debug to b
-func (c *Config) Debug(b bool) *Config {
-	c.debug = b
+func (c *Config) SetLevel(lvl LogLevel) *Config {
+	c.level = lvl
 	return c
 }
 

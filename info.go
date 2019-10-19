@@ -28,6 +28,10 @@ func (l Logger) Infof(format string, v ...interface{}) {
 // Now is an internal function for printing info messages
 // Output pattern: (?time) [INF] msg
 func (l Logger) info(print messagePrintFunction) {
+	if !l.shouldPrint(LevelInfo) {
+		return
+	}
+
 	now := time.Now()
 
 	l.mutex.Lock()
