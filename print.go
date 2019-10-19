@@ -5,6 +5,22 @@ import (
 	"time"
 )
 
+// Write writes the content of p
+func (l *Logger) Write(b []byte) {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+
+	l.output.Write(b)
+}
+
+// WriteString writes the content of s
+func (l *Logger) WriteString(s string) {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+
+	l.output.Write([]byte(s))
+}
+
 // Print prints msg
 // Output pattern: (?time) msg
 func (l Logger) Print(v ...interface{}) {
