@@ -40,7 +40,7 @@ func (l Logger) info(print messagePrintFunction) {
 	l.buff.Reset()
 
 	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getInfoMsg())
+	l.buff.Write(l.getInfoPrefix())
 	print()
 
 	l.output.Write(l.buff.Bytes())

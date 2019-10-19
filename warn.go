@@ -40,7 +40,7 @@ func (l Logger) warn(print messagePrintFunction) {
 	l.buff.Reset()
 
 	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getWarnMsg())
+	l.buff.Write(l.getWarnPrefix())
 
 	print()
 

@@ -72,35 +72,37 @@ func (l Logger) getTime(t time.Time) []byte {
 	return []byte(t.Format(l.timeLayout) + " ")
 }
 
-func (l Logger) getDebugMsg() []byte {
+// Prefixes
+
+func (l Logger) getDebugPrefix() []byte {
 	if l.printColor {
 		return coloredDEBUG
 	}
 	return usualDEBUG
 }
 
-func (l Logger) getInfoMsg() []byte {
+func (l Logger) getInfoPrefix() []byte {
 	if l.printColor {
 		return coloredINFO
 	}
 	return usualINFO
 }
 
-func (l Logger) getWarnMsg() []byte {
+func (l Logger) getWarnPrefix() []byte {
 	if l.printColor {
 		return coloredWARN
 	}
 	return usualWARN
 }
 
-func (l Logger) getErrMsg() []byte {
+func (l Logger) getErrPrefix() []byte {
 	if l.printColor {
 		return coloredERR
 	}
 	return usualERR
 }
 
-func (l Logger) getFatalMsg() []byte {
+func (l Logger) getFatalPrefix() []byte {
 	if l.printColor {
 		return coloredFATAL
 	}
