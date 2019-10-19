@@ -9,7 +9,7 @@ func main() {
 	// For dev use log.NewDevConfig() or log.NewDevLogger()
 
 	c := &clog.Config{}
-	l := c.PrintColor(true).PrintErrorLine(true).PrintTime(true).SetLevel(clog.LevelDebug).Build()
+	l := c.PrintColor(true).PrintErrorLine(true).PrintTime(true).SetLevel(clog.LevelDebug).SetPrefix("prefix: ").Build()
 	l.Debug("some debug message")
 	l.Info("some info message")
 	l.Warn("some warn message")
