@@ -1,7 +1,7 @@
 package main
 
 import (
-	clog "github.com/ShoshinNikita/log/v2"
+	clog "github.com/ShoshinNikita/log/v3"
 )
 
 func main() {
