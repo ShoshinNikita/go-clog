@@ -7,7 +7,7 @@ import (
 )
 
 // Fatal prints error and call os.Exit(1)
-// Output pattern: (?time) [FAT] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) (?custom prefix) error
 func (l Logger) Fatal(v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintln(l.buff, v...)
@@ -17,7 +17,7 @@ func (l Logger) Fatal(v ...interface{}) {
 }
 
 // Fatalf prints error and call os.Exit(1)
-// Output pattern: (?time) [FAT] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) (?custom prefix) error
 func (l Logger) Fatalf(format string, v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintf(l.buff, format, v...)
@@ -27,7 +27,7 @@ func (l Logger) Fatalf(format string, v ...interface{}) {
 }
 
 // fatal is an internal function for printing fatal messages. Is also calls os.Exit(1)
-// Output pattern: (?time) [FAT] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) (?custom prefix) error
 func (l Logger) fatal(print messagePrintFunction) {
 	if !l.shouldPrint(LevelFatal) {
 		os.Exit(1)
@@ -44,6 +44,7 @@ func (l Logger) fatal(print messagePrintFunction) {
 	l.writeIntoBuffer(l.getTime(now))
 	l.writeIntoBuffer(l.getFatalPrefix())
 	l.writeIntoBuffer(l.getCaller())
+	l.writeIntoBuffer(l.getCustomPrefix())
 
 	print()
 

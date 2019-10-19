@@ -6,7 +6,7 @@ import (
 )
 
 // Error prints error
-// Output pattern: (?time) [ERR] (?file:line) error
+// Output pattern: (?time) [ERR] (?file:line) (?custom prefix) error
 func (l Logger) Error(v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintln(l.buff, v...)
@@ -16,7 +16,7 @@ func (l Logger) Error(v ...interface{}) {
 }
 
 // Errorf prints error
-// Output pattern: (?time) [ERR] (?file:line) error
+// Output pattern: (?time) [ERR] (?file:line) (?custom prefix) error
 func (l Logger) Errorf(format string, v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintf(l.buff, format, v...)
@@ -26,7 +26,7 @@ func (l Logger) Errorf(format string, v ...interface{}) {
 }
 
 // error is an internal function for printing error messages
-// Output pattern: (?time) [ERR] (?file:line) error
+// Output pattern: (?time) [ERR] (?file:line) (?custom prefix) error
 func (l Logger) error(print messagePrintFunction) {
 	if !l.shouldPrint(LevelError) {
 		return
@@ -42,6 +42,7 @@ func (l Logger) error(print messagePrintFunction) {
 	l.writeIntoBuffer(l.getTime(now))
 	l.writeIntoBuffer(l.getErrPrefix())
 	l.writeIntoBuffer(l.getCaller())
+	l.writeIntoBuffer(l.getCustomPrefix())
 
 	print()
 

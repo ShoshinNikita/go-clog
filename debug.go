@@ -6,7 +6,7 @@ import (
 )
 
 // Debug prints debug message if Debug mode is on
-// Output pattern: (?time) [DBG] msg
+// Output pattern: (?time) [DBG] (?custom prefix) msg
 func (l Logger) Debug(v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintln(l.buff, v...)
@@ -16,7 +16,7 @@ func (l Logger) Debug(v ...interface{}) {
 }
 
 // Debugf prints debug message if Debug mode is on
-// Output pattern: (?time) [DBG] msg
+// Output pattern: (?time) [DBG] (?custom prefix) msg
 func (l Logger) Debugf(format string, v ...interface{}) {
 	print := func() (int, error) {
 		return fmt.Fprintf(l.buff, format, v...)
@@ -26,7 +26,7 @@ func (l Logger) Debugf(format string, v ...interface{}) {
 }
 
 // debug is an internal function for printing debug messages
-// Output pattern: (?time) [DBG] msg
+// Output pattern: (?time) [DBG] (?custom prefix) msg
 func (l Logger) debug(print messagePrintFunction) {
 	if !l.shouldPrint(LevelDebug) {
 		return
@@ -41,6 +41,7 @@ func (l Logger) debug(print messagePrintFunction) {
 
 	l.writeIntoBuffer(l.getTime(now))
 	l.writeIntoBuffer(l.getDebugPrefix())
+	l.writeIntoBuffer(l.getCustomPrefix())
 
 	print()
 
