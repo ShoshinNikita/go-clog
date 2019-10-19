@@ -48,8 +48,6 @@ type Logger struct {
 	mutex  *sync.Mutex
 	buff   *bytes.Buffer
 
-	global bool
-
 	level          LogLevel
 	printTime      bool
 	printColor     bool
