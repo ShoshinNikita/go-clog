@@ -21,7 +21,7 @@ func (l Logger) Debug(v ...interface{}) {
 
 	l.buff.Write(l.getTime(now))
 	l.buff.Write(l.getDebugMsg())
-	fmt.Fprint(l.buff, v...)
+	fmt.Fprintln(l.buff, v...)
 
 	l.output.Write(l.buff.Bytes())
 }
@@ -43,27 +43,6 @@ func (l Logger) Debugf(format string, v ...interface{}) {
 	l.buff.Write(l.getTime(now))
 	l.buff.Write(l.getDebugMsg())
 	fmt.Fprintf(l.buff, format, v...)
-
-	l.output.Write(l.buff.Bytes())
-}
-
-// Debugln prints debug message if Debug mode is on
-// Output pattern: (?time) [DBG] msg
-func (l Logger) Debugln(v ...interface{}) {
-	if !l.debug {
-		return
-	}
-
-	now := time.Now()
-
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getDebugMsg())
-	fmt.Fprintln(l.buff, v...)
 
 	l.output.Write(l.buff.Bytes())
 }

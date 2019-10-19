@@ -10,35 +10,35 @@ func main() {
 
 	c := &clog.Config{}
 	l := c.PrintColor(true).PrintErrorLine(true).PrintTime(true).Debug(true).Build()
-	l.Debugln("some debug message")
-	l.Infoln("some info message")
-	l.Warnln("some warn message")
-	l.Errorln("some error message")
+	l.Debug("some debug message")
+	l.Info("some info message")
+	l.Warn("some warn message")
+	l.Error("some error message")
 
 	l.WriteString("\n")
 
 	c = &clog.Config{}
 	l = c.PrintColor(true).PrintErrorLine(false).PrintTime(false).Debug(true).Build()
-	l.Debugln("some debug message")
-	l.Infoln("some info message")
-	l.Warnln("some warn message")
-	l.Errorln("some error message")
+	l.Debug("some debug message")
+	l.Info("some info message")
+	l.Warn("some warn message")
+	l.Error("some error message")
 
 	l.WriteString("\n")
 
 	c = &clog.Config{}
 	l = c.PrintColor(false).PrintErrorLine(false).PrintTime(false).Debug(true).Build()
-	l.Debugln("some debug message")
-	l.Infoln("some info message")
-	l.Warnln("some warn message")
-	l.Errorln("some error message")
+	l.Debug("some debug message")
+	l.Info("some info message")
+	l.Warn("some warn message")
+	l.Error("some error message")
 
 	l.WriteString("\n")
 
 	c = &clog.Config{}
 	l = c.PrintColor(false).PrintErrorLine(false).PrintTime(false).Debug(false).Build()
-	l.Debugln("some debug message")
-	l.Infoln("some info message")
-	l.Warnln("some warn message")
-	l.Errorln("some error message")
+	l.Debug("some debug message")
+	l.Info("some info message")
+	l.Warn("some warn message")
+	l.Error("some error message")
 }

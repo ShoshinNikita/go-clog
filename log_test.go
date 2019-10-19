@@ -41,7 +41,7 @@ func BenchmarkDevLogPrintln(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.Println(msg)
+		l.Print(msg)
 	}
 }
 
@@ -56,7 +56,7 @@ func BenchmarkDevLogErrorln(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.Errorln(msg)
+		l.Error(msg)
 	}
 }
 
@@ -71,7 +71,7 @@ func BenchmarkProdLogPrintln(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.Println(msg)
+		l.Print(msg)
 	}
 }
 
@@ -86,6 +86,6 @@ func BenchmarkProdLogErrorln(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		l.Errorln(msg)
+		l.Error(msg)
 	}
 }

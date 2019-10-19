@@ -17,7 +17,7 @@ func (l Logger) Warn(v ...interface{}) {
 
 	l.buff.Write(l.getTime(now))
 	l.buff.Write(l.getWarnMsg())
-	fmt.Fprint(l.buff, v...)
+	fmt.Fprintln(l.buff, v...)
 
 	l.output.Write(l.buff.Bytes())
 }
@@ -35,23 +35,6 @@ func (l Logger) Warnf(format string, v ...interface{}) {
 	l.buff.Write(l.getTime(now))
 	l.buff.Write(l.getWarnMsg())
 	fmt.Fprintf(l.buff, format, v...)
-
-	l.output.Write(l.buff.Bytes())
-}
-
-// Warnln prints warning
-// Output pattern: (?time) [WRN] warning
-func (l Logger) Warnln(v ...interface{}) {
-	now := time.Now()
-
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getWarnMsg())
-	fmt.Fprintln(l.buff, v...)
 
 	l.output.Write(l.buff.Bytes())
 }
