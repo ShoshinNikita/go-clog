@@ -31,17 +31,7 @@ func (l Logger) getCaller() []byte {
 		return nil
 	}
 
-	var (
-		file string
-		line int
-		ok   bool
-	)
-
-	if l.global {
-		_, file, line, ok = runtime.Caller(3)
-	} else {
-		_, file, line, ok = runtime.Caller(2)
-	}
+	_, file, line, ok := runtime.Caller(3)
 	if !ok {
 		return nil
 	}
@@ -72,37 +62,79 @@ func (l Logger) getTime(t time.Time) []byte {
 	return []byte(t.Format(l.timeLayout) + " ")
 }
 
-func (l Logger) getDebugMsg() []byte {
+// Prefixes
+
+func (l Logger) getDebugPrefix() []byte {
 	if l.printColor {
 		return coloredDEBUG
 	}
 	return usualDEBUG
 }
 
-func (l Logger) getInfoMsg() []byte {
+func (l Logger) getInfoPrefix() []byte {
 	if l.printColor {
 		return coloredINFO
 	}
 	return usualINFO
 }
 
-func (l Logger) getWarnMsg() []byte {
+func (l Logger) getWarnPrefix() []byte {
 	if l.printColor {
 		return coloredWARN
 	}
 	return usualWARN
 }
 
-func (l Logger) getErrMsg() []byte {
+func (l Logger) getErrPrefix() []byte {
 	if l.printColor {
 		return coloredERR
 	}
 	return usualERR
 }
 
-func (l Logger) getFatalMsg() []byte {
+func (l Logger) getFatalPrefix() []byte {
 	if l.printColor {
 		return coloredFATAL
 	}
 	return usualFATAL
+}
+
+//
+
+func (l Logger) getCustomPrefix() []byte {
+	return l.customPrefix
+}
+
+// Other
+
+func (l Logger) clone() *Logger {
+	cfg := Config{
+		output:         l.output,
+		level:          l.level,
+		prefix:         l.customPrefix,
+		printColor:     l.printColor,
+		printErrorLine: l.printErrorLine,
+		printTime:      l.printTime,
+		timeLayout:     l.timeLayout,
+	}
+
+	return cfg.Build()
+}
+
+func (l Logger) shouldPrint(msgLevel LogLevel) bool {
+	if msgLevel < l.level {
+		return false
+	}
+
+	return true
+}
+
+// writeIntoBuffer is a wrapper with small optimization for "Logger.buff.Write()"
+func (l Logger) writeIntoBuffer(p []byte) (int, error) {
+	// Small optimization
+	if p == nil {
+		return 0, nil
+	}
+
+	return l.buff.Write(p)
 }

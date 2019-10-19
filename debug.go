@@ -6,51 +6,29 @@ import (
 )
 
 // Debug prints debug message if Debug mode is on
-// Output pattern: (?time) [DBG] msg
+// Output pattern: (?time) [DBG] (?custom prefix) msg
 func (l Logger) Debug(v ...interface{}) {
-	if !l.debug {
-		return
+	print := func() (int, error) {
+		return fmt.Fprintln(l.buff, v...)
 	}
 
-	now := time.Now()
-
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getDebugMsg())
-	fmt.Fprint(l.buff, v...)
-
-	l.output.Write(l.buff.Bytes())
+	l.debug(print)
 }
 
 // Debugf prints debug message if Debug mode is on
-// Output pattern: (?time) [DBG] msg
+// Output pattern: (?time) [DBG] (?custom prefix) msg
 func (l Logger) Debugf(format string, v ...interface{}) {
-	if !l.debug {
-		return
+	print := func() (int, error) {
+		return fmt.Fprintf(l.buff, format, v...)
 	}
 
-	now := time.Now()
-
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getDebugMsg())
-	fmt.Fprintf(l.buff, format, v...)
-
-	l.output.Write(l.buff.Bytes())
+	l.debug(print)
 }
 
-// Debugln prints debug message if Debug mode is on
-// Output pattern: (?time) [DBG] msg
-func (l Logger) Debugln(v ...interface{}) {
-	if !l.debug {
+// debug is an internal function for printing debug messages
+// Output pattern: (?time) [DBG] (?custom prefix) msg
+func (l Logger) debug(print messagePrintFunction) {
+	if !l.shouldPrint(LevelDebug) {
 		return
 	}
 
@@ -61,9 +39,11 @@ func (l Logger) Debugln(v ...interface{}) {
 
 	l.buff.Reset()
 
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getDebugMsg())
-	fmt.Fprintln(l.buff, v...)
+	l.writeIntoBuffer(l.getTime(now))
+	l.writeIntoBuffer(l.getDebugPrefix())
+	l.writeIntoBuffer(l.getCustomPrefix())
+
+	print()
 
 	l.output.Write(l.buff.Bytes())
 }

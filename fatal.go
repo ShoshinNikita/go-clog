@@ -7,48 +7,33 @@ import (
 )
 
 // Fatal prints error and call os.Exit(1)
-// Output pattern: (?time) [FAT] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) (?custom prefix) error
 func (l Logger) Fatal(v ...interface{}) {
-	now := time.Now()
+	print := func() (int, error) {
+		return fmt.Fprintln(l.buff, v...)
+	}
 
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getFatalMsg())
-	l.buff.Write(l.getCaller())
-	fmt.Fprint(l.buff, v...)
-
-	l.output.Write(l.buff.Bytes())
-
-	os.Exit(1)
+	l.fatal(print)
 }
 
 // Fatalf prints error and call os.Exit(1)
-// Output pattern: (?time) [FAT] (?file:line) error
+// Output pattern: (?time) [FAT] (?file:line) (?custom prefix) error
 func (l Logger) Fatalf(format string, v ...interface{}) {
-	now := time.Now()
+	print := func() (int, error) {
+		return fmt.Fprintf(l.buff, format, v...)
+	}
 
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getFatalMsg())
-	l.buff.Write(l.getCaller())
-	fmt.Fprintf(l.buff, format, v...)
-
-	l.output.Write(l.buff.Bytes())
-
-	os.Exit(1)
+	l.fatal(print)
 }
 
-// Fatalln prints error and call os.Exit(1)
-// Output pattern: (?time) [FAT] (?file:line) error
-func (l Logger) Fatalln(v ...interface{}) {
+// fatal is an internal function for printing fatal messages. Is also calls os.Exit(1)
+// Output pattern: (?time) [FAT] (?file:line) (?custom prefix) error
+func (l Logger) fatal(print messagePrintFunction) {
+	if !l.shouldPrint(LevelFatal) {
+		os.Exit(1)
+		return
+	}
+
 	now := time.Now()
 
 	l.mutex.Lock()
@@ -56,10 +41,12 @@ func (l Logger) Fatalln(v ...interface{}) {
 
 	l.buff.Reset()
 
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getFatalMsg())
-	l.buff.Write(l.getCaller())
-	fmt.Fprintln(l.buff, v...)
+	l.writeIntoBuffer(l.getTime(now))
+	l.writeIntoBuffer(l.getFatalPrefix())
+	l.writeIntoBuffer(l.getCaller())
+	l.writeIntoBuffer(l.getCustomPrefix())
+
+	print()
 
 	l.output.Write(l.buff.Bytes())
 

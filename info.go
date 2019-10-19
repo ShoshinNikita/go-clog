@@ -6,42 +6,32 @@ import (
 )
 
 // Info prints info message
-// Output pattern: (?time) [INF] msg
+// Output pattern: (?time) [INF] (?custom prefix) msg
 func (l Logger) Info(v ...interface{}) {
-	now := time.Now()
+	print := func() (int, error) {
+		return fmt.Fprintln(l.buff, v...)
+	}
 
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getInfoMsg())
-	fmt.Fprint(l.buff, v...)
-
-	l.output.Write(l.buff.Bytes())
+	l.info(print)
 }
 
 // Infof prints info message
-// Output pattern: (?time) [INF] msg
+// Output pattern: (?time) [INF] (?custom prefix) msg
 func (l Logger) Infof(format string, v ...interface{}) {
-	now := time.Now()
+	print := func() (int, error) {
+		return fmt.Fprintf(l.buff, format, v...)
+	}
 
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getInfoMsg())
-	fmt.Fprintf(l.buff, format, v...)
-
-	l.output.Write(l.buff.Bytes())
+	l.info(print)
 }
 
-// Infoln prints info message
-// Output pattern: (?time) [INF] msg
-func (l Logger) Infoln(v ...interface{}) {
+// Now is an internal function for printing info messages
+// Output pattern: (?time) [INF] (?custom prefix) msg
+func (l Logger) info(print messagePrintFunction) {
+	if !l.shouldPrint(LevelInfo) {
+		return
+	}
+
 	now := time.Now()
 
 	l.mutex.Lock()
@@ -49,9 +39,11 @@ func (l Logger) Infoln(v ...interface{}) {
 
 	l.buff.Reset()
 
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getInfoMsg())
-	fmt.Fprintln(l.buff, v...)
+	l.writeIntoBuffer(l.getTime(now))
+	l.writeIntoBuffer(l.getInfoPrefix())
+	l.writeIntoBuffer(l.getCustomPrefix())
+
+	print()
 
 	l.output.Write(l.buff.Bytes())
 }

@@ -1,4 +1,6 @@
-module github.com/ShoshinNikita/log/v2
+module github.com/ShoshinNikita/go-clog/v3
+
+go 1.13
 
 require (
 	github.com/fatih/color v1.7.0

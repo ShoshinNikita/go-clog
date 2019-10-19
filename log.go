@@ -31,32 +31,36 @@ const (
 	DefaultTimeLayout = "01.02.2006 15:04:05"
 )
 
+type LogLevel int
+
+const (
+	LevelDebug = iota - 1
+	LevelInfo
+	LevelWarn
+	LevelError
+	LevelFatal
+)
+
+type messagePrintFunction func() (int, error)
+
+// -----------------------------------------------------------------------------
+// Logger
+// -----------------------------------------------------------------------------
+
 type Logger struct {
 	output io.Writer
 	mutex  *sync.Mutex
 	buff   *bytes.Buffer
 
-	global bool
+	level LogLevel
 
-	debug          bool
-	printTime      bool
+	customPrefix []byte
+
 	printColor     bool
 	printErrorLine bool
-	timeLayout     string
-}
 
-func (l *Logger) Write(b []byte) {
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.output.Write(b)
-}
-
-func (l *Logger) WriteString(s string) {
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.output.Write([]byte(s))
+	printTime  bool
+	timeLayout string
 }
 
 func NewDevLogger() *Logger {
@@ -67,19 +71,49 @@ func NewProdLogger() *Logger {
 	return NewProdConfig().Build()
 }
 
+// WithPrefix returns cloned Logger with added prefix (prefix + ": ").
+//
+// Example:
+//   - l.prefix == "old prefix"
+//   - l.WithPrefix("new prefix")
+//   - l.prefix == "new prefix: old prefix"
+//
+func (l Logger) WithPrefix(prefix string) *Logger {
+	if prefix == "" {
+		return l.clone()
+	}
+
+	log := l.clone()
+
+	prefix = prefix + ": "
+	log.customPrefix = append([]byte(prefix), log.customPrefix...)
+
+	return log
+}
+
+// -----------------------------------------------------------------------------
+// Config
+// -----------------------------------------------------------------------------
+
 type Config struct {
-	output         io.Writer
-	debug          bool
-	printTime      bool
+	output io.Writer
+
+	level LogLevel
+
+	prefix []byte
+
 	printColor     bool
 	printErrorLine bool
-	timeLayout     string
+
+	printTime  bool
+	timeLayout string
 }
 
 func NewDevConfig() *Config {
 	return &Config{
 		output:         color.Output,
-		debug:          true,
+		level:          LevelDebug,
+		prefix:         nil,
 		printTime:      true,
 		printColor:     true,
 		printErrorLine: true,
@@ -90,7 +124,8 @@ func NewDevConfig() *Config {
 func NewProdConfig() *Config {
 	return &Config{
 		output:         os.Stdout,
-		debug:          false,
+		level:          LevelInfo,
+		prefix:         nil,
 		printTime:      true,
 		printColor:     false,
 		printErrorLine: true,
@@ -113,7 +148,8 @@ func (c *Config) Build() *Logger {
 		l.output = os.Stdout
 	}
 
-	l.debug = c.debug
+	l.level = c.level
+	l.customPrefix = c.prefix
 	l.printTime = c.printTime
 	l.printColor = c.printColor
 	l.printErrorLine = c.printErrorLine
@@ -127,8 +163,8 @@ func (c *Config) Build() *Logger {
 }
 
 // Debug sets Config.debug to b
-func (c *Config) Debug(b bool) *Config {
-	c.debug = b
+func (c *Config) SetLevel(lvl LogLevel) *Config {
+	c.level = lvl
 	return c
 }
 
@@ -160,5 +196,11 @@ func (c *Config) SetOutput(w io.Writer) *Config {
 // Default Config.timeLayout is DefaultTimeLayout
 func (c *Config) SetTimeLayout(layout string) *Config {
 	c.timeLayout = layout
+	return c
+}
+
+// SetPrefix overwrites Config.prefix. It doesn't add ": "!
+func (c *Config) SetPrefix(prefix string) *Config {
+	c.prefix = []byte(prefix)
 	return c
 }

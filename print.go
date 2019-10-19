@@ -5,41 +5,43 @@ import (
 	"time"
 )
 
-// Print prints msg
-// Output pattern: (?time) msg
-func (l Logger) Print(v ...interface{}) {
-	now := time.Now()
-
+// Write writes the content of p
+func (l *Logger) Write(b []byte) {
 	l.mutex.Lock()
 	defer l.mutex.Unlock()
 
-	l.buff.Reset()
+	l.output.Write(b)
+}
 
-	l.buff.Write(l.getTime(now))
-	fmt.Fprint(l.buff, v...)
+// WriteString writes the content of s
+func (l *Logger) WriteString(s string) {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
 
-	l.output.Write(l.buff.Bytes())
+	l.output.Write([]byte(s))
+}
+
+// Print prints msg
+// Output pattern: (?time) (?custom prefix) msg
+func (l Logger) Print(v ...interface{}) {
+	print := func() (int, error) {
+		return fmt.Fprintln(l.buff, v...)
+	}
+
+	l.print(print)
 }
 
 // Printf prints msg
-// Output pattern: (?time) msg
+// Output pattern: (?time) (?custom prefix) msg
 func (l Logger) Printf(format string, v ...interface{}) {
-	now := time.Now()
+	print := func() (int, error) {
+		return fmt.Fprintf(l.buff, format, v...)
+	}
 
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	fmt.Fprintf(l.buff, format, v...)
-
-	l.output.Write(l.buff.Bytes())
+	l.print(print)
 }
 
-// Println prints msg
-// Output pattern: (?time) msg
-func (l Logger) Println(v ...interface{}) {
+func (l Logger) print(print messagePrintFunction) {
 	now := time.Now()
 
 	l.mutex.Lock()
@@ -47,8 +49,10 @@ func (l Logger) Println(v ...interface{}) {
 
 	l.buff.Reset()
 
-	l.buff.Write(l.getTime(now))
-	fmt.Fprintln(l.buff, v...)
+	l.writeIntoBuffer(l.getTime(now))
+	l.writeIntoBuffer(l.getCustomPrefix())
+
+	print()
 
 	l.output.Write(l.buff.Bytes())
 }
