@@ -101,10 +101,17 @@ func (l Logger) getFatalPrefix() []byte {
 
 //
 
+func (l Logger) getCustomPrefix() []byte {
+	return l.customPrefix
+}
+
+// Other
+
 func (l Logger) clone() *Logger {
 	cfg := Config{
 		output:         l.output,
 		level:          l.level,
+		prefix:         l.customPrefix,
 		printColor:     l.printColor,
 		printErrorLine: l.printErrorLine,
 		printTime:      l.printTime,
