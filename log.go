@@ -31,6 +31,8 @@ const (
 	DefaultTimeLayout = "01.02.2006 15:04:05"
 )
 
+type messagePrintFunction func() (int, error)
+
 type Logger struct {
 	output io.Writer
 	mutex  *sync.Mutex

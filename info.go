@@ -8,23 +8,26 @@ import (
 // Info prints info message
 // Output pattern: (?time) [INF] msg
 func (l Logger) Info(v ...interface{}) {
-	now := time.Now()
+	print := func() (int, error) {
+		return fmt.Fprintln(l.buff, v...)
+	}
 
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getInfoMsg())
-	fmt.Fprintln(l.buff, v...)
-
-	l.output.Write(l.buff.Bytes())
+	l.info(print)
 }
 
 // Infof prints info message
 // Output pattern: (?time) [INF] msg
 func (l Logger) Infof(format string, v ...interface{}) {
+	print := func() (int, error) {
+		return fmt.Fprintf(l.buff, format, v...)
+	}
+
+	l.info(print)
+}
+
+// Now is an internal function for printing info messages
+// Output pattern: (?time) [INF] msg
+func (l Logger) info(print messagePrintFunction) {
 	now := time.Now()
 
 	l.mutex.Lock()
@@ -34,7 +37,7 @@ func (l Logger) Infof(format string, v ...interface{}) {
 
 	l.buff.Write(l.getTime(now))
 	l.buff.Write(l.getInfoMsg())
-	fmt.Fprintf(l.buff, format, v...)
+	print()
 
 	l.output.Write(l.buff.Bytes())
 }

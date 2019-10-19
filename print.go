@@ -8,22 +8,24 @@ import (
 // Print prints msg
 // Output pattern: (?time) msg
 func (l Logger) Print(v ...interface{}) {
-	now := time.Now()
+	print := func() (int, error) {
+		return fmt.Fprintln(l.buff, v...)
+	}
 
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	fmt.Fprintln(l.buff, v...)
-
-	l.output.Write(l.buff.Bytes())
+	l.print(print)
 }
 
 // Printf prints msg
 // Output pattern: (?time) msg
 func (l Logger) Printf(format string, v ...interface{}) {
+	print := func() (int, error) {
+		return fmt.Fprintf(l.buff, format, v...)
+	}
+
+	l.print(print)
+}
+
+func (l Logger) print(print messagePrintFunction) {
 	now := time.Now()
 
 	l.mutex.Lock()
@@ -32,7 +34,8 @@ func (l Logger) Printf(format string, v ...interface{}) {
 	l.buff.Reset()
 
 	l.buff.Write(l.getTime(now))
-	fmt.Fprintf(l.buff, format, v...)
+
+	print()
 
 	l.output.Write(l.buff.Bytes())
 }

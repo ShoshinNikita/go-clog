@@ -8,23 +8,26 @@ import (
 // Warn prints warning
 // Output pattern: (?time) [WRN] warning
 func (l Logger) Warn(v ...interface{}) {
-	now := time.Now()
+	print := func() (int, error) {
+		return fmt.Fprintln(l.buff, v...)
+	}
 
-	l.mutex.Lock()
-	defer l.mutex.Unlock()
-
-	l.buff.Reset()
-
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getWarnMsg())
-	fmt.Fprintln(l.buff, v...)
-
-	l.output.Write(l.buff.Bytes())
+	l.warn(print)
 }
 
 // Warnf prints warning
 // Output pattern: (?time) [WRN] warning
 func (l Logger) Warnf(format string, v ...interface{}) {
+	print := func() (int, error) {
+		return fmt.Fprintf(l.buff, format, v...)
+	}
+
+	l.warn(print)
+}
+
+// warn is an internal function for printing warning messages
+// Output pattern: (?time) [WRN] warning
+func (l Logger) warn(print messagePrintFunction) {
 	now := time.Now()
 
 	l.mutex.Lock()
@@ -34,7 +37,8 @@ func (l Logger) Warnf(format string, v ...interface{}) {
 
 	l.buff.Write(l.getTime(now))
 	l.buff.Write(l.getWarnMsg())
-	fmt.Fprintf(l.buff, format, v...)
+
+	print()
 
 	l.output.Write(l.buff.Bytes())
 }
