@@ -109,10 +109,22 @@ func (l Logger) getFatalPrefix() []byte {
 	return usualFATAL
 }
 
+//
+
 func (l Logger) shouldPrint(msgLevel LogLevel) bool {
 	if msgLevel < l.level {
 		return false
 	}
 
 	return true
+}
+
+// writeIntoBuffer is a wrapper with small optimization for "Logger.buff.Write()"
+func (l Logger) writeIntoBuffer(p []byte) (int, error) {
+	// Small optimization
+	if p == nil {
+		return 0, nil
+	}
+
+	return l.buff.Write(p)
 }

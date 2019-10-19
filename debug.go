@@ -39,8 +39,8 @@ func (l Logger) debug(print messagePrintFunction) {
 
 	l.buff.Reset()
 
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getDebugPrefix())
+	l.writeIntoBuffer(l.getTime(now))
+	l.writeIntoBuffer(l.getDebugPrefix())
 
 	print()
 

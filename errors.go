@@ -39,9 +39,9 @@ func (l Logger) error(print messagePrintFunction) {
 
 	l.buff.Reset()
 
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getErrPrefix())
-	l.buff.Write(l.getCaller())
+	l.writeIntoBuffer(l.getTime(now))
+	l.writeIntoBuffer(l.getErrPrefix())
+	l.writeIntoBuffer(l.getCaller())
 
 	print()
 

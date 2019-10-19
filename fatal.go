@@ -41,9 +41,9 @@ func (l Logger) fatal(print messagePrintFunction) {
 
 	l.buff.Reset()
 
-	l.buff.Write(l.getTime(now))
-	l.buff.Write(l.getFatalPrefix())
-	l.buff.Write(l.getCaller())
+	l.writeIntoBuffer(l.getTime(now))
+	l.writeIntoBuffer(l.getFatalPrefix())
+	l.writeIntoBuffer(l.getCaller())
 
 	print()
 

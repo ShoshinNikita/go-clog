@@ -33,7 +33,7 @@ func (l Logger) print(print messagePrintFunction) {
 
 	l.buff.Reset()
 
-	l.buff.Write(l.getTime(now))
+	l.writeIntoBuffer(l.getTime(now))
 
 	print()
 
