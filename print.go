@@ -31,11 +31,11 @@ func (l Logger) Print(v ...interface{}) {
 	l.print(print)
 }
 
-// Printf prints msg
+// Printf prints msg."\n" is added automatically
 // Output pattern: (?time) (?custom prefix) msg
 func (l Logger) Printf(format string, v ...interface{}) {
 	print := func() (int, error) {
-		return fmt.Fprintf(l.buff, format, v...)
+		return fmt.Fprintf(l.buff, format+"\n", v...)
 	}
 
 	l.print(print)

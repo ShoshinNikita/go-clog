@@ -15,11 +15,11 @@ func (l Logger) Debug(v ...interface{}) {
 	l.debug(print)
 }
 
-// Debugf prints debug message if Debug mode is on
+// Debugf prints debug message if Debug mode is on. "\n" is added automatically
 // Output pattern: (?time) [DBG] (?custom prefix) msg
 func (l Logger) Debugf(format string, v ...interface{}) {
 	print := func() (int, error) {
-		return fmt.Fprintf(l.buff, format, v...)
+		return fmt.Fprintf(l.buff, format+"\n", v...)
 	}
 
 	l.debug(print)

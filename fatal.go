@@ -16,11 +16,11 @@ func (l Logger) Fatal(v ...interface{}) {
 	l.fatal(print)
 }
 
-// Fatalf prints error and call os.Exit(1)
+// Fatalf prints error and call os.Exit(1). "\n" is added automatically
 // Output pattern: (?time) [FAT] (?file:line) (?custom prefix) error
 func (l Logger) Fatalf(format string, v ...interface{}) {
 	print := func() (int, error) {
-		return fmt.Fprintf(l.buff, format, v...)
+		return fmt.Fprintf(l.buff, format+"\n", v...)
 	}
 
 	l.fatal(print)

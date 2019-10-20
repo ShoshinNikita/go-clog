@@ -17,19 +17,19 @@ func TestLoggerLevels(t *testing.T) {
 		log.Debugf("debugf %s\n", "arg")
 
 		log.Info("info")
-		log.Infof("infof %s\n", "arg")
+		log.Infof("infof %s", "arg")
 
 		log.Warn("warn")
-		log.Warnf("warnf %s %d\n", "arg", 15)
+		log.Warnf("warnf %s %d", "arg", 15)
 
 		log.Error("error")
-		log.Errorf("errorf %s\n", "arg")
+		log.Errorf("errorf %s", "arg")
 
 		// log.Fatal("fatal")
 		// log.Fatalf("fatalf %s", "arg")
 
 		log.Print("print")
-		log.Printf("printf %s\n", "arg")
+		log.Printf("printf %s", "arg")
 
 		log.Write([]byte("bytes"))
 		log.WriteString("string")
@@ -51,7 +51,7 @@ func TestLoggerLevels(t *testing.T) {
 			},
 			output: []byte(
 				"[DBG] debug\n" +
-					"[DBG] debugf arg\n" +
+					"[DBG] debugf arg\n\n" +
 					"[INF] info\n" +
 					"[INF] infof arg\n" +
 					"[WRN] warn\n" +
@@ -155,13 +155,13 @@ func TestLoggerLevels(t *testing.T) {
 func TestWithPrefix(t *testing.T) {
 	printFunction := func(log *Logger) {
 		log.Debug("debug")
-		log.Debugf("debugf %s\n", "arg")
+		log.Debugf("debugf %s", "arg")
 
 		log.Info("info")
-		log.Infof("infof %s\n", "arg")
+		log.Infof("infof %s", "arg")
 
 		log.Warn("warn")
-		log.Warnf("warnf %s %d\n", "arg", 15)
+		log.Warnf("warnf %s %d", "arg", 15)
 
 		log.Error("error")
 		log.Errorf("errorf %s\n", "arg")
@@ -170,7 +170,7 @@ func TestWithPrefix(t *testing.T) {
 		// log.Fatalf("fatalf %s", "arg")
 
 		log.Print("print")
-		log.Printf("printf %s\n", "arg")
+		log.Printf("printf %s", "arg")
 
 		log.Write([]byte("bytes"))
 		log.WriteString("string")
@@ -195,7 +195,7 @@ func TestWithPrefix(t *testing.T) {
 					"[WRN] prefixwarn\n" +
 					"[WRN] prefixwarnf arg 15\n" +
 					"[ERR] prefixerror\n" +
-					"[ERR] prefixerrorf arg\n" +
+					"[ERR] prefixerrorf arg\n\n" +
 					"prefixprint\n" +
 					"prefixprintf arg\n" +
 					"bytesstring"),
@@ -214,7 +214,7 @@ func TestWithPrefix(t *testing.T) {
 					"[WRN] prefix: warn\n" +
 					"[WRN] prefix: warnf arg 15\n" +
 					"[ERR] prefix: error\n" +
-					"[ERR] prefix: errorf arg\n" +
+					"[ERR] prefix: errorf arg\n\n" +
 					"prefix: print\n" +
 					"prefix: printf arg\n" +
 					"bytesstring"),
@@ -233,7 +233,7 @@ func TestWithPrefix(t *testing.T) {
 					"[WRN] second prefix: first prefix: warn\n" +
 					"[WRN] second prefix: first prefix: warnf arg 15\n" +
 					"[ERR] second prefix: first prefix: error\n" +
-					"[ERR] second prefix: first prefix: errorf arg\n" +
+					"[ERR] second prefix: first prefix: errorf arg\n\n" +
 					"second prefix: first prefix: print\n" +
 					"second prefix: first prefix: printf arg\n" +
 					"bytesstring"),

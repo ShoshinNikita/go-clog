@@ -15,11 +15,11 @@ func (l Logger) Error(v ...interface{}) {
 	l.error(print)
 }
 
-// Errorf prints error
+// Errorf prints error. "\n" is added automatically
 // Output pattern: (?time) [ERR] (?file:line) (?custom prefix) error
 func (l Logger) Errorf(format string, v ...interface{}) {
 	print := func() (int, error) {
-		return fmt.Fprintf(l.buff, format, v...)
+		return fmt.Fprintf(l.buff, format+"\n", v...)
 	}
 
 	l.error(print)

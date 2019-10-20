@@ -15,11 +15,11 @@ func (l Logger) Warn(v ...interface{}) {
 	l.warn(print)
 }
 
-// Warnf prints warning
+// Warnf prints warning. "\n" is added automatically
 // Output pattern: (?time) [WRN] (?custom prefix) warning
 func (l Logger) Warnf(format string, v ...interface{}) {
 	print := func() (int, error) {
-		return fmt.Fprintf(l.buff, format, v...)
+		return fmt.Fprintf(l.buff, format+"\n", v...)
 	}
 
 	l.warn(print)

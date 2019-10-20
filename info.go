@@ -15,11 +15,11 @@ func (l Logger) Info(v ...interface{}) {
 	l.info(print)
 }
 
-// Infof prints info message
+// Infof prints info message. "\n" is added automatically
 // Output pattern: (?time) [INF] (?custom prefix) msg
 func (l Logger) Infof(format string, v ...interface{}) {
 	print := func() (int, error) {
-		return fmt.Fprintf(l.buff, format, v...)
+		return fmt.Fprintf(l.buff, format+"\n", v...)
 	}
 
 	l.info(print)
