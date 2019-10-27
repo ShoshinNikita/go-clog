@@ -224,18 +224,18 @@ func TestWithPrefix(t *testing.T) {
 				PrintColor(false).
 				PrintErrorLine(false).
 				PrintTime(false).
-				Build().WithPrefix("first prefix").WithPrefix("second prefix"),
+				Build().WithPrefix("[first prefix]").WithPrefix("[second prefix]"),
 			output: []byte(
-				"[DBG] second prefix: first prefix: debug\n" +
-					"[DBG] second prefix: first prefix: debugf arg\n" +
-					"[INF] second prefix: first prefix: info\n" +
-					"[INF] second prefix: first prefix: infof arg\n" +
-					"[WRN] second prefix: first prefix: warn\n" +
-					"[WRN] second prefix: first prefix: warnf arg 15\n" +
-					"[ERR] second prefix: first prefix: error\n" +
-					"[ERR] second prefix: first prefix: errorf arg\n\n" +
-					"second prefix: first prefix: print\n" +
-					"second prefix: first prefix: printf arg\n" +
+				    "[DBG] [first prefix]: [second prefix]: debug\n" +
+					"[DBG] [first prefix]: [second prefix]: debugf arg\n" +
+					"[INF] [first prefix]: [second prefix]: info\n" +
+					"[INF] [first prefix]: [second prefix]: infof arg\n" +
+					"[WRN] [first prefix]: [second prefix]: warn\n" +
+					"[WRN] [first prefix]: [second prefix]: warnf arg 15\n" +
+					"[ERR] [first prefix]: [second prefix]: error\n" +
+					"[ERR] [first prefix]: [second prefix]: errorf arg\n\n" +
+					"[first prefix]: [second prefix]: print\n" +
+					"[first prefix]: [second prefix]: printf arg\n" +
 					"bytesstring"),
 		},
 	}
