@@ -91,6 +91,17 @@ func (l Logger) WithPrefix(prefix string) *Logger {
 	return log
 }
 
+// SetPrefix returns cloned Logger with overwritten prefix
+func (l Logger) SetPrefix(prefix string) *Logger {
+	if prefix == "" {
+		return l.clone()
+	}
+
+	log := l.clone()
+	log.customPrefix = []byte(prefix)
+	return log
+}
+
 // -----------------------------------------------------------------------------
 // Config
 // -----------------------------------------------------------------------------
